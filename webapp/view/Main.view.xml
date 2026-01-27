@@ -2,5 +2,36 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
     <Page id="page" title="{i18n>title}">
+	<Table id="booksTable"
+		inset="false"
+		items="{
+			path: 'books>/book',
+			sorter: {
+				path: 'Name'
+			}
+		}">
+       <columns>
+            <Column><Text text="{i18n>colName}"/></Column>
+            <Column><Text text="{i18n>colAuthor}"/></Column>
+            <Column><Text text="{i18n>colGenre}"/></Column>
+            <Column><Text text="{i18n>colReleaseDate}"/></Column>
+            <Column hAlign="End"><Text text="{i18n>colAvailableQuantity}"/></Column>
+        </columns>
+        <items>
+    <ColumnListItem>
+      <cells>
+        <Text text="{books>Name}"/>
+        <Text text="{books>Author}"/>
+        <Text text="{books>Genre}"/>
+         <Text text="{
+          path:'books>ReleaseDate',
+          type:'sap.ui.model.type.Date',
+          formatOptions:{style:'medium'}
+        }"/>
+        <ObjectNumber number="{books>AvailableQuantity}"/>
+      </cells>
+    </ColumnListItem>
+      </items>
+	</Table>
     </Page>
 </mvc:View>
