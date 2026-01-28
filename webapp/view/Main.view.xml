@@ -1,21 +1,39 @@
 <mvc:View controllerName="project2.controller.Main"
     xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
     xmlns="sap.m">
     <Page id="page" title="{i18n>title}">
 	<Table id="booksTable"
 		inset="false"
+    mode="MultiSelect"
 		items="{
-			path: 'books>/book',
-			sorter: {
-				path: 'Name'
-			}
+			path: 'books>/book'
 		}">
+    		<headerToolbar>
+					<OverflowToolbar>
+						  <Button text="{i18n>btnAdd}" press="onAdd"/>
+						  <Button text="{i18n>btnDelete}" press="onDelete" type="Reject"/>
+						<ToolbarSpacer />
+            	<Label text="{i18n>filterLabel}" labelFor="input-a" />
+		          <Input 
+                    id="input-a" 
+                    value="{books>/nameFilter}"  
+                    valueLiveUpdate="true"
+                    width="30%"/>
+				    <Select
+                    selectedKey="{books>/selectedGenre}"
+                    items="{path: 'books>/genres'}">
+                    <core:Item key="{books>key}" text="{books>text}" />
+				    </Select>
+            <Button text="Filter" press="onFilterChange" />
+					</OverflowToolbar>
+				</headerToolbar>
        <columns>
             <Column><Text text="{i18n>colName}"/></Column>
             <Column><Text text="{i18n>colAuthor}"/></Column>
             <Column><Text text="{i18n>colGenre}"/></Column>
             <Column><Text text="{i18n>colReleaseDate}"/></Column>
-            <Column hAlign="End"><Text text="{i18n>colAvailableQuantity}"/></Column>
+            <Column hAlign="Begin"><Text text="{i18n>colAvailableQuantity}"/></Column>
         </columns>
         <items>
     <ColumnListItem>
