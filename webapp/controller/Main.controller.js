@@ -1,13 +1,96 @@
 sap.ui.define(
-  ["sap/ui/core/mvc/Controller", "sap/ui/model/json/JSONModel"],
-  (Controller, JSONModel) => {
+  [
+    "project2/controller/BaseController",
+    "sap/ui/model/json/JSONModel",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator",
+  ],
+  (BaseController, JSONModel, Filter, FilterOperator) => {
     "use strict";
 
-    return Controller.extend("project2.controller.Main", {
+    return BaseController.extend("project2.controller.Main", {
       onInit() {
-        const oBookModel = new JSONModel({ book: this.oBookData });
+        const aUniqueGenres = [
+          ...new Set(this.oBookData.map((book) => book.Genre)),
+        ];
+        const aGenres = [
+          { key: "", text: "All" },
+          ...aUniqueGenres.map((sGenre) => ({ key: sGenre, text: sGenre })),
+        ];
+
+        const oBookModel = new JSONModel({
+          book: this.oBookData,
+        });
+
+        const oUIModel = new JSONModel({
+          genres: aGenres,
+          selectedGenre: "",
+          nameFilter: "",
+          canDelete: false,
+        });
 
         this.getView().setModel(oBookModel, "books");
+        this.getView().setModel(oUIModel, "view");
+      },
+
+      onAdd() {
+        const oBookModel = this.getModel("books");
+        const aBook = oBookModel.getProperty("/book") || [];
+
+        const oEmptyLine = {
+          ID: "",
+          Name: "",
+          Author: "",
+          Genre: "",
+          ReleaseDate: null,
+          AvailableQuantity: "",
+        };
+
+        oBookModel.setProperty("/book", [...aBook, oEmptyLine]);
+      },
+
+      onDelete() {
+        const oBookModel = this.getModel("books");
+        const aBook = oBookModel.getProperty("/book");
+
+        const oTable = this.byId("booksTable");
+        const aContext = oTable.getSelectedContexts(true);
+
+        const aIndexes = aContext.map((context) =>
+          Number(context.getPath().split("/").pop())
+        );
+
+        const aNewBook = aBook.filter((_, i) => !aIndexes.includes(i));
+        oBookModel.setProperty("/book", aNewBook);
+        oTable.removeSelections(true);
+        this.getModel("view").setProperty("/canDelete", false);
+      },
+
+      onSelectionChange() {
+        const oTable = this.byId("booksTable");
+        const bCanDelete = oTable.getSelectedContexts(true).length > 0;
+        this.getModel("view").setProperty("/canDelete", bCanDelete);
+      },
+
+      onFilterChange() {
+        const oViewModel = this.getModel("view");
+        const sNameFilter = oViewModel.getProperty("/nameFilter") || "";
+        const sGenre = oViewModel.getProperty("/selectedGenre") || "";
+        const filters = [];
+
+        if (sNameFilter) {
+          filters.push(
+            new Filter("Name", FilterOperator.Contains, sNameFilter)
+          );
+        }
+
+        if (sGenre) {
+          filters.push(new Filter("Genre", FilterOperator.EQ, sGenre));
+        }
+
+        const oTable = this.byId("booksTable");
+        const oBinding = oTable.getBinding("items");
+        oBinding.filter(filters);
       },
 
       oBookData: [
@@ -26,6 +109,14 @@ sap.ui.define(
           Genre: "Technology",
           ReleaseDate: new Date("2021-09-01"),
           AvailableQuantity: 5,
+        },
+        {
+          ID: "B007",
+          Name: "Tech Patterns",
+          Author: "Nina Petrova",
+          Genre: "Technology",
+          ReleaseDate: new Date("2020-06-10"),
+          AvailableQuantity: 7,
         },
         {
           ID: "B003",
