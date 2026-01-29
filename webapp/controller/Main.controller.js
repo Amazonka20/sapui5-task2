@@ -4,8 +4,9 @@ sap.ui.define(
     "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
+    "sap/m/MessageBox",
   ],
-  (BaseController, JSONModel, Filter, FilterOperator) => {
+  (BaseController, JSONModel, Filter, FilterOperator, MessageBox) => {
     "use strict";
 
     return BaseController.extend("project2.controller.Main", {
@@ -55,6 +56,20 @@ sap.ui.define(
       },
 
       onDelete() {
+        MessageBox.confirm(this.getI18nText("confirmDialogText"), {
+          title: this.getI18nText("confirmDialogTitle"),
+          actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+          emphasizedAction: MessageBox.Action.YES,
+          onClose: (sAction) => {
+            if (sAction === MessageBox.Action.YES) {
+              this._doDelete();
+            }
+          },
+          dependentOn: this.getView(),
+        });
+      },
+
+      _doDelete() {
         const oBookModel = this.getModel("books");
         const aBook = oBookModel.getProperty("/book");
 
@@ -100,6 +115,7 @@ sap.ui.define(
 
       onToggleEdit(oEvent) {
         const oCtx = oEvent.getSource().getBindingContext("books");
+        const oBookModel = this.getModel("books");
         const sPath = oCtx.getPath();
         const sEditMode = sPath + "/editMode";
 

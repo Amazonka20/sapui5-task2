@@ -5,5 +5,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], (Controller) => {
     getModel(sName) {
       return this.getView().getModel(sName);
     },
+
+    getI18nText(sText) {
+      return this.getView().getModel("i18n").getResourceBundle().getText(sText);
+    },
   });
 });
