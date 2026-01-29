@@ -4,11 +4,8 @@ sap.ui.define(
     "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
-    "sap/m/Dialog",
-    "sap/m/Button",
-    "sap/m/Text",
   ],
-  (BaseController, JSONModel, Filter, FilterOperator, Dialog, Button, Text) => {
+  (BaseController, JSONModel, Filter, FilterOperator) => {
     "use strict";
 
     return BaseController.extend("project2.controller.Main", {
@@ -18,25 +15,33 @@ sap.ui.define(
         ];
         const aGenres = [
           { key: "", text: "All" },
-          ...aUniqueGenres.map((g) => ({ key: g, text: g })),
+          ...aUniqueGenres.map((sGenre) => ({ key: sGenre, text: sGenre })),
         ];
-        const aBooks = this.oBookData.map((b) => ({ ...b, editMode: false }));
+        const aBooks = this.oBookData.map((book) => ({
+          ...book,
+          editMode: false,
+        }));
 
         const oBookModel = new JSONModel({
           book: aBooks,
+        });
+
+        const oUIModel = new JSONModel({
           genres: aGenres,
           selectedGenre: "",
           nameFilter: "",
+          canDelete: false,
         });
 
         this.getView().setModel(oBookModel, "books");
+        this.getView().setModel(oUIModel, "view");
       },
 
       onAdd() {
-        const oBookModel = this.getBookModel();
+        const oBookModel = this.getModel("books");
         const aBook = oBookModel.getProperty("/book") || [];
 
-        const oEmprtyLine = {
+        const oEmptyLine = {
           ID: "",
           Name: "",
           Author: "",
@@ -46,38 +51,11 @@ sap.ui.define(
           editMode: false,
         };
 
-        oBookModel.setProperty("/book", [...aBook, oEmprtyLine]);
+        oBookModel.setProperty("/book", [...aBook, oEmptyLine]);
       },
 
       onDelete() {
-        const oBundle = this.getView().getModel("i18n").getResourceBundle();
-
-        if (!this._oDeleteDialog) {
-          this._oDeleteDialog = new Dialog({
-            title: oBundle.getText("confirmDialogTitle"),
-            content: new Text({ text: oBundle.getText("confirmDialogText") }),
-            beginButton: new Button({
-              text: oBundle.getText("btnYes"),
-              type: "Emphasized",
-              press: () => {
-                this._doDelete();
-                this._oDeleteDialog.close();
-              },
-            }),
-            endButton: new Button({
-              text: oBundle.getText("btnNo"),
-              press: () => this._oDeleteDialog.close(),
-            }),
-          });
-
-          this.getView().addDependent(this._oDeleteDialog);
-        }
-
-        this._oDeleteDialog.open();
-      },
-
-      _doDelete() {
-        const oBookModel = this.getBookModel();
+        const oBookModel = this.getModel("books");
         const aBook = oBookModel.getProperty("/book");
 
         const oTable = this.byId("booksTable");
@@ -90,12 +68,19 @@ sap.ui.define(
         const aNewBook = aBook.filter((_, i) => !aIndexes.includes(i));
         oBookModel.setProperty("/book", aNewBook);
         oTable.removeSelections(true);
+        this.getModel("view").setProperty("/canDelete", false);
+      },
+
+      onSelectionChange() {
+        const oTable = this.byId("booksTable");
+        const bCanDelete = oTable.getSelectedContexts(true).length > 0;
+        this.getModel("view").setProperty("/canDelete", bCanDelete);
       },
 
       onFilterChange() {
-        const oBookModel = this.getBookModel();
-        const sNameFilter = oBookModel.getProperty("/nameFilter") || "";
-        const sGenre = oBookModel.getProperty("/selectedGenre") || "";
+        const oViewModel = this.getModel("view");
+        const sNameFilter = oViewModel.getProperty("/nameFilter") || "";
+        const sGenre = oViewModel.getProperty("/selectedGenre") || "";
         const filters = [];
 
         if (sNameFilter) {
@@ -115,7 +100,6 @@ sap.ui.define(
 
       onToggleEdit(oEvent) {
         const oCtx = oEvent.getSource().getBindingContext("books");
-        const oBookModel = this.getBookModel();
         const sPath = oCtx.getPath();
         const sEditMode = sPath + "/editMode";
 
