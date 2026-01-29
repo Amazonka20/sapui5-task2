@@ -48,16 +48,12 @@ sap.ui.define(
       },
 
       onDelete() {
-        const oBundle = this.getI18nText();
-        const sYes = oBundle.getText("btnYes");
-        const sNo = oBundle.getText("btnNo");
-
-        MessageBox.confirm(oBundle.getText("confirmDialogText"), {
-          title: oBundle.getText("confirmDialogTitle"),
-          actions: [sYes, sNo],
-          emphasizedAction: sYes,
+        MessageBox.confirm(this.getI18nText("confirmDialogText"), {
+          title: this.getI18nText("confirmDialogTitle"),
+          actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+          emphasizedAction: MessageBox.Action.YES,
           onClose: (sAction) => {
-            if (sAction === sYes) {
+            if (sAction === MessageBox.Action.YES) {
               this._doDelete();
             }
           },
