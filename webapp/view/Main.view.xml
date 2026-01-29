@@ -6,9 +6,7 @@
 	<Table id="booksTable"
 		inset="false"
     mode="MultiSelect"
-		items="{
-			path: 'books>/book'
-		}">
+		items="{books>/book}">
     		<headerToolbar>
 					<OverflowToolbar>
 						  <Button text="{i18n>btnAdd}" press="onAdd"/>
@@ -40,7 +38,7 @@
       <cells>
         <VBox>
           <Text text="{books>Name}" visible="{= !${books>editMode}}"/>
-          <Input value="{books>Name}" visible="{= ${books>editMode}}" />
+          <Input value="{books>Name}" visible="{books>editMode}" />
         </VBox>
         <Text text="{books>Author}"/>
         <Text text="{books>Genre}"/>
