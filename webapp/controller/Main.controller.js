@@ -20,9 +20,6 @@ sap.ui.define(
 
         const oBookModel = new JSONModel({
           book: this.oBookData,
-          genres: aGenres,
-          selectedGenre: "",
-          nameFilter: "",
         });
 
         const oUIModel = new JSONModel({
