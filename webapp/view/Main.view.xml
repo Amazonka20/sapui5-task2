@@ -6,21 +6,24 @@
 	<Table id="booksTable"
 		inset="false"
     mode="MultiSelect"
-		items="{books>/book}">
+    selectionChange="onSelectionChange"
+		items="{
+			path: 'books>/book'
+		}">
     		<headerToolbar>
 					<OverflowToolbar>
 						  <Button text="{i18n>btnAdd}" press="onAdd"/>
-						  <Button text="{i18n>btnDelete}" press="onDelete" type="Reject"/>
+						  <Button text="{i18n>btnDelete}" press="onDelete" enabled="{view>/canDelete}" type="Reject"/>
 						<ToolbarSpacer />
             	<Label text="{i18n>filterLabel}" labelFor="input-a" />
 		          <Input 
                     id="input-a" 
-                    value="{books>/nameFilter}"  
+                    value="{view>/nameFilter}"  
                     width="30%"/>
 				    <Select
-                    selectedKey="{books>/selectedGenre}"
-                    items="{path: 'books>/genres'}">
-                    <core:Item key="{books>key}" text="{books>text}" />
+                    selectedKey="{view>/selectedGenre}"
+                    items="{path: 'view>/genres'}">
+                    <core:Item key="{view>key}" text="{view>text}" />
 				    </Select>
             <Button text="Filter" press="onFilterChange" />
 					</OverflowToolbar>

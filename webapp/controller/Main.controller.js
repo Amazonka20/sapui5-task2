@@ -15,25 +15,30 @@ sap.ui.define(
         ];
         const aGenres = [
           { key: "", text: "All" },
-          ...aUniqueGenres.map((g) => ({ key: g, text: g })),
+          ...aUniqueGenres.map((sGenre) => ({ key: sGenre, text: sGenre })),
         ];
         const aBooks = this.oBookData.map((b) => ({ ...b, editMode: false }));
 
         const oBookModel = new JSONModel({
-          book: aBooks,
+          book: this.oBookData,
+        });
+
+        const oUIModel = new JSONModel({
           genres: aGenres,
           selectedGenre: "",
           nameFilter: "",
+          canDelete: false,
         });
 
         this.getView().setModel(oBookModel, "books");
+        this.getView().setModel(oUIModel, "view");
       },
 
       onAdd() {
-        const oBookModel = this.getBookModel();
+        const oBookModel = this.getModel("books");
         const aBook = oBookModel.getProperty("/book") || [];
 
-        const oEmprtyLine = {
+        const oEmptyLine = {
           ID: "",
           Name: "",
           Author: "",
@@ -43,11 +48,11 @@ sap.ui.define(
           editMode: false,
         };
 
-        oBookModel.setProperty("/book", [...aBook, oEmprtyLine]);
+        oBookModel.setProperty("/book", [...aBook, oEmptyLine]);
       },
 
       onDelete() {
-        const oBookModel = this.getBookModel();
+        const oBookModel = this.getModel("books");
         const aBook = oBookModel.getProperty("/book");
 
         const oTable = this.byId("booksTable");
@@ -60,12 +65,19 @@ sap.ui.define(
         const aNewBook = aBook.filter((_, i) => !aIndexes.includes(i));
         oBookModel.setProperty("/book", aNewBook);
         oTable.removeSelections(true);
+        this.getModel("view").setProperty("/canDelete", false);
+      },
+
+      onSelectionChange() {
+        const oTable = this.byId("booksTable");
+        const bCanDelete = oTable.getSelectedContexts(true).length > 0;
+        this.getModel("view").setProperty("/canDelete", bCanDelete);
       },
 
       onFilterChange() {
-        const oBookModel = this.getBookModel();
-        const sNameFilter = oBookModel.getProperty("/nameFilter") || "";
-        const sGenre = oBookModel.getProperty("/selectedGenre") || "";
+        const oViewModel = this.getModel("view");
+        const sNameFilter = oViewModel.getProperty("/nameFilter") || "";
+        const sGenre = oViewModel.getProperty("/selectedGenre") || "";
         const filters = [];
 
         if (sNameFilter) {
