@@ -4,8 +4,11 @@ sap.ui.define(
     "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
+    "sap/m/Dialog",
+    "sap/m/Button",
+    "sap/m/Text",
   ],
-  (BaseController, JSONModel, Filter, FilterOperator) => {
+  (BaseController, JSONModel, Filter, FilterOperator, Dialog, Button, Text) => {
     "use strict";
 
     return BaseController.extend("project2.controller.Main", {
@@ -47,6 +50,33 @@ sap.ui.define(
       },
 
       onDelete() {
+        const oBundle = this.getView().getModel("i18n").getResourceBundle();
+
+        if (!this._oDeleteDialog) {
+          this._oDeleteDialog = new Dialog({
+            title: oBundle.getText("confirmDialogTitle"),
+            content: new Text({ text: oBundle.getText("confirmDialogText") }),
+            beginButton: new Button({
+              text: oBundle.getText("btnYes"),
+              type: "Emphasized",
+              press: () => {
+                this._doDelete();
+                this._oDeleteDialog.close();
+              },
+            }),
+            endButton: new Button({
+              text: oBundle.getText("btnNo"),
+              press: () => this._oDeleteDialog.close(),
+            }),
+          });
+
+          this.getView().addDependent(this._oDeleteDialog);
+        }
+
+        this._oDeleteDialog.open();
+      },
+
+      _doDelete() {
         const oBookModel = this.getBookModel();
         const aBook = oBookModel.getProperty("/book");
 
