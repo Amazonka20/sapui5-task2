@@ -17,10 +17,13 @@ sap.ui.define(
           { key: "", text: "All" },
           ...aUniqueGenres.map((sGenre) => ({ key: sGenre, text: sGenre })),
         ];
-        const aBooks = this.oBookData.map((b) => ({ ...b, editMode: false }));
+        const aBooks = this.oBookData.map((book) => ({
+          ...book,
+          editMode: false,
+        }));
 
         const oBookModel = new JSONModel({
-          book: this.oBookData,
+          book: aBooks,
         });
 
         const oUIModel = new JSONModel({
