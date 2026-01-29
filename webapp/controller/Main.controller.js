@@ -4,11 +4,9 @@ sap.ui.define(
     "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
-    "sap/m/Dialog",
-    "sap/m/Button",
-    "sap/m/Text",
+    "sap/m/MessageBox",
   ],
-  (BaseController, JSONModel, Filter, FilterOperator, Dialog, Button, Text) => {
+  (BaseController, JSONModel, Filter, FilterOperator, MessageBox) => {
     "use strict";
 
     return BaseController.extend("project2.controller.Main", {
@@ -50,30 +48,21 @@ sap.ui.define(
       },
 
       onDelete() {
-        const oBundle = this.getView().getModel("i18n").getResourceBundle();
+        const oBundle = this.getI18nText();
+        const sYes = oBundle.getText("btnYes");
+        const sNo = oBundle.getText("btnNo");
 
-        if (!this._oDeleteDialog) {
-          this._oDeleteDialog = new Dialog({
-            title: oBundle.getText("confirmDialogTitle"),
-            content: new Text({ text: oBundle.getText("confirmDialogText") }),
-            beginButton: new Button({
-              text: oBundle.getText("btnYes"),
-              type: "Emphasized",
-              press: () => {
-                this._doDelete();
-                this._oDeleteDialog.close();
-              },
-            }),
-            endButton: new Button({
-              text: oBundle.getText("btnNo"),
-              press: () => this._oDeleteDialog.close(),
-            }),
-          });
-
-          this.getView().addDependent(this._oDeleteDialog);
-        }
-
-        this._oDeleteDialog.open();
+        MessageBox.confirm(oBundle.getText("confirmDialogText"), {
+          title: oBundle.getText("confirmDialogTitle"),
+          actions: [sYes, sNo],
+          emphasizedAction: sYes,
+          onClose: (sAction) => {
+            if (sAction === sYes) {
+              this._doDelete();
+            }
+          },
+          dependentOn: this.getView(),
+        });
       },
 
       _doDelete() {
