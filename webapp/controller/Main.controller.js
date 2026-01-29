@@ -115,7 +115,7 @@ sap.ui.define(
 
       onToggleEdit(oEvent) {
         const oCtx = oEvent.getSource().getBindingContext("books");
-        const oBookModel = this.getBookModel();
+        const oBookModel = this.getModel("books");
         const sPath = oCtx.getPath();
         const sEditMode = sPath + "/editMode";
 
