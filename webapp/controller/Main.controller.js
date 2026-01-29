@@ -17,6 +17,7 @@ sap.ui.define(
           { key: "", text: "All" },
           ...aUniqueGenres.map((sGenre) => ({ key: sGenre, text: sGenre })),
         ];
+        const aBooks = this.oBookData.map((b) => ({ ...b, editMode: false }));
 
         const oBookModel = new JSONModel({
           book: this.oBookData,
@@ -44,6 +45,7 @@ sap.ui.define(
           Genre: "",
           ReleaseDate: null,
           AvailableQuantity: "",
+          editMode: false,
         };
 
         oBookModel.setProperty("/book", [...aBook, oEmptyLine]);
@@ -91,6 +93,15 @@ sap.ui.define(
         const oTable = this.byId("booksTable");
         const oBinding = oTable.getBinding("items");
         oBinding.filter(filters);
+      },
+
+      onToggleEdit(oEvent) {
+        const oCtx = oEvent.getSource().getBindingContext("books");
+        const oBookModel = this.getBookModel();
+        const sPath = oCtx.getPath();
+        const sEditMode = sPath + "/editMode";
+
+        oBookModel.setProperty(sEditMode, !oBookModel.getProperty(sEditMode));
       },
 
       oBookData: [

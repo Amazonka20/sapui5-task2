@@ -19,7 +19,6 @@
 		          <Input 
                     id="input-a" 
                     value="{view>/nameFilter}"  
-                    valueLiveUpdate="true"
                     width="30%"/>
 				    <Select
                     selectedKey="{view>/selectedGenre}"
@@ -31,15 +30,19 @@
 				</headerToolbar>
        <columns>
             <Column><Text text="{i18n>colName}"/></Column>
-            <Column><Text text="{i18n>colAuthor}"/></Column>
-            <Column><Text text="{i18n>colGenre}"/></Column>
-            <Column><Text text="{i18n>colReleaseDate}"/></Column>
-            <Column hAlign="Begin"><Text text="{i18n>colAvailableQuantity}"/></Column>
+            <Column hAlign="End"><Text text="{i18n>colAuthor}"/></Column>
+            <Column hAlign="End"><Text text="{i18n>colGenre}"/></Column>
+            <Column hAlign="End"><Text text="{i18n>colReleaseDate}"/></Column>
+            <Column hAlign="Center"><Text text="{i18n>colAvailableQuantity}"/></Column>
+            <Column><Text text="{i18n>colActions}"/></Column>
         </columns>
         <items>
     <ColumnListItem>
       <cells>
-        <Text text="{books>Name}"/>
+        <VBox>
+          <Text text="{books>Name}" visible="{= !${books>editMode}}"/>
+          <Input value="{books>Name}" visible="{books>editMode}" />
+        </VBox>
         <Text text="{books>Author}"/>
         <Text text="{books>Genre}"/>
          <Text text="{
@@ -48,9 +51,13 @@
           formatOptions:{style:'medium'}
         }"/>
         <ObjectNumber number="{books>AvailableQuantity}"/>
+         <Button 
+            text="{= ${books>editMode} ? ${i18n>btnSave} : ${i18n>btnEdit}}" 
+            press="onToggleEdit" 
+            type="Transparent"/>
       </cells>
     </ColumnListItem>
       </items>
 	</Table>
-    </Page>
+</Page>
 </mvc:View>
