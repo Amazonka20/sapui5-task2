@@ -12,7 +12,7 @@
 		}">
     		<headerToolbar>
 					<OverflowToolbar>
-						  <Button text="{i18n>btnAdd}" press="onAdd"/>
+						  <Button text="{i18n>btnAdd}" press="onOpenAddDialog"/>
 						  <Button text="{i18n>btnDelete}" press="onDelete" enabled="{view>/canDelete}" type="Reject"/>
 						<ToolbarSpacer />
             	<Label text="{i18n>filterLabel}" labelFor="input-a" />
@@ -25,7 +25,7 @@
                     items="{path: 'view>/genres'}">
                     <core:Item key="{view>key}" text="{view>text}" />
 				    </Select>
-            <Button text="Filter" press="onFilterChange" />
+            <Button text="{i18n>btnFilter}" press="onFilterChange" />
 					</OverflowToolbar>
 				</headerToolbar>
        <columns>
@@ -48,7 +48,7 @@
          <Text text="{
           path:'books>ReleaseDate',
           type:'sap.ui.model.type.Date',
-          formatOptions:{style:'medium'}
+          formatter: '.formatter.publishedYear'
         }"/>
         <ObjectNumber number="{books>AvailableQuantity}"/>
          <Button 
