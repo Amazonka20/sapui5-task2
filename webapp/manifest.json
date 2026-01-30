@@ -16,7 +16,7 @@
       "toolsId": "3c865db5-010b-4865-b287-bb7e3a8bf5a4"
     },
     "dataSources": {
-      "mainServiceV2": {
+      "oDataServiceV2": {
         "uri": "/odata/v2/",
         "type": "OData",
         "settings": {
@@ -24,7 +24,7 @@
           "localUri": "localService/metadataV2.xml"
         }
       },
-      "mainServiceV4": {
+      "oDataServiceV4": {
         "uri": "/odata/v4/",
         "type": "OData",
         "settings": {
@@ -70,16 +70,16 @@
           "bundleName": "project2.i18n.i18n"
         }
       },
-      "mainV2": {
+      "oDataV2": {
         "type": "sap.ui.model.odata.v2.ODataModel",
-        "dataSource": "mainServiceV2",
+        "dataSource": "oDataServiceV2",
         "settings": {
           "useBatch": true
         }
       },
-      "mainV4": {
+      "oDataV4": {
         "type": "sap.ui.model.odata.v4.ODataModel",
-        "dataSource": "mainServiceV4",
+        "dataSource": "oDataServiceV4",
         "settings": {
           "synchronizationMode": "None",
           "operationMode": "Server",

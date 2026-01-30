@@ -1,0 +1,35 @@
+<mvc:View controllerName="project2.controller.ODataV4Tab"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+        <Title text="OData V4 Model" level="H3"/>
+        <Table items="{oDataV4>/Products}">
+        <columns>
+            <Column><Text text="Name"/></Column>
+            <Column><Text text="Description"/></Column>
+            <Column><Text text="ReleaseDate"/></Column>
+            <Column><Text text="DiscontinuedDate"/></Column>
+            <Column><Text text="Rating"/></Column>
+            <Column><Text text="Price"/></Column>
+        </columns>
+        <items>
+            <ColumnListItem>
+            <cells>
+                <Text text="{oDataV4>Name}"/>
+                <Text text="{oDataV4>Description}"/>
+                <Text text="{
+                            path: 'oDataV4>ReleaseDate',
+                            type: 'sap.ui.model.odata.type.Date',
+                            formatOptions: {
+                                style: 'medium'
+                            }
+                        }"/>
+                <Text text="{
+                            path: 'oDataV4>DiscontinuedDate',
+                            type: 'sap.ui.model.odata.type.Date'}"/>
+                <Text text="{oDataV4>Rating}"/>
+                <ObjectNumber number="{oDataV4>Price}"/>
+            </cells>
+            </ColumnListItem>
+        </items>
+        </Table>
+</mvc:View>
