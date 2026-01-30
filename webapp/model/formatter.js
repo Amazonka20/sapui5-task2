@@ -6,15 +6,9 @@ sap.ui.define([], () => {
       if (!oDate) {
         return "";
       }
-      const resourceBundle = this.getOwnerComponent()
-        .getModel("i18n")
-        .getResourceBundle();
-
       const dateObject = oDate instanceof Date ? oDate : new Date(oDate);
 
-      return `${resourceBundle.getText(
-        "publishedPrefix"
-      )} ${dateObject.getFullYear()}`;
+      return this.getI18nText("publishedPrefix", [dateObject.getFullYear()]);
     },
   };
 });
