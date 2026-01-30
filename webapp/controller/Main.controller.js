@@ -5,8 +5,16 @@ sap.ui.define(
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/m/MessageBox",
+    "sap/ui/core/ValueState",
   ],
-  (BaseController, JSONModel, Filter, FilterOperator, MessageBox) => {
+  (
+    BaseController,
+    JSONModel,
+    Filter,
+    FilterOperator,
+    MessageBox,
+    ValueState
+  ) => {
     "use strict";
 
     return BaseController.extend("project2.controller.Main", {
@@ -36,23 +44,6 @@ sap.ui.define(
 
         this.getView().setModel(oBookModel, "books");
         this.getView().setModel(oUIModel, "view");
-      },
-
-      onAdd() {
-        const oBookModel = this.getModel("books");
-        const aBook = oBookModel.getProperty("/book") || [];
-
-        const oEmptyLine = {
-          ID: "",
-          Name: "",
-          Author: "",
-          Genre: "",
-          ReleaseDate: null,
-          AvailableQuantity: "",
-          editMode: false,
-        };
-
-        oBookModel.setProperty("/book", [...aBook, oEmptyLine]);
       },
 
       onDelete() {
@@ -120,6 +111,135 @@ sap.ui.define(
         const sEditMode = sPath + "/editMode";
 
         oBookModel.setProperty(sEditMode, !oBookModel.getProperty(sEditMode));
+      },
+
+      onOpenAddDialog() {
+        this.getModel("books").setProperty("/newBook", this._createEmptyBook());
+        this._resetDialogValidation();
+        this._onOpenDialog();
+      },
+
+      onSaveDialog() {
+        if (!this._validateDialog()) {
+          return;
+        }
+        const oBookModel = this.getModel("books");
+        const aBooks = oBookModel.getProperty("/book") || [];
+        const oNew = oBookModel.getProperty("/newBook");
+
+        oBookModel.setProperty("/book", [...aBooks, oNew]);
+        this.onCloseDialog();
+      },
+
+      onCloseDialog() {
+        this._resetDialogValidation();
+        this.byId("dialog").close();
+      },
+
+      _validateDialog() {
+        const oBookModel = this.getModel("books");
+        const oNewBook = oBookModel.getProperty("/newBook") || {};
+
+        const oNameCtrl = this.byId("inpName");
+        const oAuthorCtrl = this.byId("inpAuthor");
+        const oGenreCtrl = this.byId("inpGenre");
+        const oQuantityCtrl = this.byId("inpQty");
+        const oReleaseDateCtrl = this.byId("dpReleaseDate");
+
+        let isValid = true;
+
+        const setError = (ctrl, text) => {
+          ctrl.setValueState(ValueState.Error);
+          ctrl.setValueStateText(text);
+          isValid = false;
+        };
+
+        const clear = (ctrl) => {
+          ctrl.setValueState(ValueState.None);
+          ctrl.setValueStateText("");
+        };
+
+        if (!String(oNewBook.Name || "").trim()) {
+          setError(oNameCtrl, this.getI18nText("errRequired"));
+        } else {
+          clear(oNameCtrl);
+        }
+
+        if (!String(oNewBook.Author || "").trim()) {
+          setError(oAuthorCtrl, this.getI18nText("errRequired"));
+        } else {
+          clear(oAuthorCtrl);
+        }
+
+        if (!String(oNewBook.Genre || "").trim()) {
+          setError(oGenreCtrl, this.getI18nText("errRequired"));
+        } else {
+          clear(oGenreCtrl);
+        }
+
+        if (!String(oNewBook.AvailableQuantity ?? "").trim()) {
+          setError(oQuantityCtrl, this.getI18nText("errRequired"));
+        } else {
+          clear(oQuantityCtrl);
+        }
+
+        const selectedDate = oReleaseDateCtrl.getDateValue();
+
+        if (!selectedDate) {
+          setError(oReleaseDateCtrl, this.getI18nText("errRequired"));
+        } else {
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+
+          const pickedDate = new Date(selectedDate);
+          pickedDate.setHours(0, 0, 0, 0);
+
+          if (pickedDate > today) {
+            setError(oReleaseDateCtrl, this.getI18nText("errDateNotFuture"));
+          } else {
+            clear(oReleaseDateCtrl);
+          }
+        }
+
+        return isValid;
+      },
+
+      _resetDialogValidation() {
+        const aControlIds = [
+          "inpName",
+          "inpAuthor",
+          "inpGenre",
+          "inpQty",
+          "dpReleaseDate",
+        ];
+
+        aControlIds.forEach((sId) => {
+          const oCtrl = this.byId(sId);
+          if (!oCtrl) return;
+
+          oCtrl.setValueState(ValueState.None);
+          if (oCtrl.setValueStateText) oCtrl.setValueStateText("");
+        });
+      },
+
+      async _onOpenDialog() {
+        this.oDialog ??= await this.loadFragment({
+          name: "project2.view.Dialog",
+        });
+
+        this.oDialog.open();
+      },
+
+      _createEmptyBook() {
+        return {
+          ID: "",
+          Name: "",
+          Author: "",
+          Genre: "",
+          ReleaseDate: null,
+          AvailableQuantity: "",
+          editMode: false,
+        };
       },
 
       oBookData: [
