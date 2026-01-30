@@ -12,7 +12,7 @@
 		}">
     		<headerToolbar>
 					<OverflowToolbar>
-						  <Button text="{i18n>btnAdd}" press="onAdd"/>
+						  <Button text="{i18n>btnAdd}" press="onOpenAddDialog"/>
 						  <Button text="{i18n>btnDelete}" press="onDelete" enabled="{view>/canDelete}" type="Reject"/>
 						<ToolbarSpacer />
             	<Label text="{i18n>filterLabel}" labelFor="input-a" />
