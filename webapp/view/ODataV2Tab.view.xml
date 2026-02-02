@@ -18,7 +18,8 @@
                 <Text text="{oDataV2>ID}"/>
                 <Text text="{oDataV2>Name}"/>
                 <Text text="{oDataV2>Description}"/>
-                <Text text="'oDataV2>ReleaseDate',
+                <Text text="{
+                            path: 'oDataV2>ReleaseDate',
                             type: 'sap.ui.model.odata.type.DateTime'
                             }"/>
                 <Text text="{

@@ -18,11 +18,8 @@
                 <Text text="{oDataV4>Description}"/>
                 <Text text="{
                             path: 'oDataV4>ReleaseDate',
-                            type: 'sap.ui.model.odata.type.Date',
-                            formatOptions: {
-                                style: 'medium'
-                            }
-                        }"/>
+                            type: 'sap.ui.model.odata.type.Date'
+                            }"/>
                 <Text text="{
                             path: 'oDataV4>DiscontinuedDate',
                             type: 'sap.ui.model.odata.type.Date'}"/>
