@@ -1,0 +1,38 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+>
+ <Dialog id="dialog" title="{i18n>dialogTitleAddBook}" class="sapUiContentPadding">
+    <content>
+       <VBox width="100%">
+      <Label text="{i18n>labelName}" required="true"/>
+      <Input id="inpName" value="{newBook>/Name}"/>
+
+      <Label text="{i18n>labelAuthor}" required="true" class="sapUiSmallMarginTop"/>
+      <Input id="inpAuthor" value="{newBook>/Author}"/>
+
+      <Label text="{i18n>labelGenre}" required="true" class="sapUiSmallMarginTop"/>
+      <Input id="inpGenre" value="{newBook>/Genre}"/>
+
+      <Label text="{i18n>labelReleaseDate}" required="true" class="sapUiSmallMarginTop"/>
+      <DatePicker
+        id="dpReleaseDate"
+        dateValue="{newBook>/ReleaseDate}"
+        change="handleChange"/>
+
+      <Label text="{i18n>labelAvailableQuantity}" required="true" class="sapUiSmallMarginTop"/>
+      <Input
+        id="inpQty"
+        type="Number"
+        value="{newBook>/AvailableQuantity}"/>
+    </VBox>
+    </content>
+
+    <beginButton>
+      <Button text="{i18n>btnSave}" type="Emphasized" press="onSaveDialog"/>
+    </beginButton>
+    <endButton>
+      <Button text="{i18n>btnClose}" press="onCloseDialog"/>
+    </endButton>
+  </Dialog>
+</core:FragmentDefinition>
