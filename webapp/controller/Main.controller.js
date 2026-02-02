@@ -6,6 +6,7 @@ sap.ui.define(
     "sap/ui/model/FilterOperator",
     "sap/m/MessageBox",
     "sap/ui/core/ValueState",
+    "project2/model/formatter",
   ],
   (
     BaseController,
@@ -13,11 +14,13 @@ sap.ui.define(
     Filter,
     FilterOperator,
     MessageBox,
-    ValueState
+    ValueState,
+    formatter
   ) => {
     "use strict";
 
     return BaseController.extend("project2.controller.Main", {
+      formatter: formatter,
       onInit() {
         const aUniqueGenres = [
           ...new Set(this.oBookData.map((book) => book.Genre)),

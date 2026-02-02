@@ -25,7 +25,7 @@
                     items="{path: 'view>/genres'}">
                     <core:Item key="{view>key}" text="{view>text}" />
 				    </Select>
-            <Button text="Filter" press="onFilterChange" />
+            <Button text="{i18n>btnFilter}" press="onFilterChange" />
 					</OverflowToolbar>
 				</headerToolbar>
        <columns>
@@ -48,7 +48,7 @@
          <Text text="{
           path:'books>ReleaseDate',
           type:'sap.ui.model.type.Date',
-          formatOptions:{style:'medium'}
+          formatter: '.formatter.publishedYear'
         }"/>
         <ObjectNumber number="{books>AvailableQuantity}"/>
          <Button 
