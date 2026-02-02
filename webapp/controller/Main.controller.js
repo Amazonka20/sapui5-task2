@@ -115,9 +115,7 @@ sap.ui.define(
 
       async onOpenAddDialog() {
         const oDialog = await this._getDialog();
-        const oNewBookModel = new JSONModel(this._createEmptyBook());
-        oDialog.setModel(oNewBookModel, "newBook");
-
+        oDialog.getModel("newBook").setData(this._getEmptyBook());
         this._resetDialogValidation();
         oDialog.open();
       },
@@ -221,13 +219,18 @@ sap.ui.define(
       },
 
       async _getDialog() {
-        this.oDialog ??= await this.loadFragment({
-          name: "project2.view.Dialog",
-        });
+        if (!this.oDialog) {
+          this.oDialog = await this.loadFragment({
+            name: "project2.view.Dialog",
+          });
+
+          const oNewBookModel = new JSONModel(this._getEmptyBook());
+          this.oDialog.setModel(oNewBookModel, "newBook");
+        }
         return this.oDialog;
       },
 
-      _createEmptyBook() {
+      _getEmptyBook() {
         return {
           Name: "",
           Author: "",
