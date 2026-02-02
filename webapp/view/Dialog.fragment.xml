@@ -4,27 +4,27 @@
 >
  <Dialog id="dialog" title="{i18n>dialogTitleAddBook}" class="sapUiContentPadding">
     <content>
-       <VBox width="100%" class="sapUiSmallMarginTop">
-      <Label text="{i18n>labelName}"/>
-      <Input id="inpName" value="{books>/newBook/Name}"/>
+       <VBox width="100%">
+      <Label text="{i18n>labelName}" required="true"/>
+      <Input id="inpName" value="{newBook>/Name}"/>
 
-      <Label text="{i18n>labelAuthor}" class="sapUiSmallMarginTop"/>
-      <Input id="inpAuthor" value="{books>/newBook/Author}"/>
+      <Label text="{i18n>labelAuthor}" required="true" class="sapUiSmallMarginTop"/>
+      <Input id="inpAuthor" value="{newBook>/Author}"/>
 
-      <Label text="{i18n>labelGenre}" class="sapUiSmallMarginTop"/>
-      <Input id="inpGenre" value="{books>/newBook/Genre}"/>
+      <Label text="{i18n>labelGenre}" required="true" class="sapUiSmallMarginTop"/>
+      <Input id="inpGenre" value="{newBook>/Genre}"/>
 
-      <Label text="{i18n>labelReleaseDate}" class="sapUiSmallMarginTop"/>
+      <Label text="{i18n>labelReleaseDate}" required="true" class="sapUiSmallMarginTop"/>
       <DatePicker
         id="dpReleaseDate"
-        dateValue="{books>/newBook/ReleaseDate}"
+        dateValue="{newBook>/ReleaseDate}"
         change="handleChange"/>
 
-      <Label text="{i18n>labelAvailableQuantity}" class="sapUiSmallMarginTop"/>
+      <Label text="{i18n>labelAvailableQuantity}" required="true" class="sapUiSmallMarginTop"/>
       <Input
         id="inpQty"
         type="Number"
-        value="{books>/newBook/AvailableQuantity}"/>
+        value="{newBook>/AvailableQuantity}"/>
     </VBox>
     </content>
 
