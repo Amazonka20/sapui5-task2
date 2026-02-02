@@ -1,8 +1,8 @@
 [
   {
     "ID": 1,
-    "Name": "Name_1",
-    "Description": "Description_1",
+    "Name": "Glass City",
+    "Description": "Urban fantasy about a city that appears only at dusk.",
     "ReleaseDate": "2011-08-31T15:31:03",
     "DiscontinuedDate": "2004-03-17T16:31:03",
     "Rating": 5,
@@ -10,8 +10,8 @@
   },
   {
     "ID": 2,
-    "Name": "Name_2",
-    "Description": "Description_2",
+    "Name": "Signal Lost",
+    "Description": "Sci-fi mystery about a vanished deep-space probe.",
     "ReleaseDate": "2014-11-21T16:31:03",
     "DiscontinuedDate": "2015-02-09T11:00:00",
     "Rating": 7,
@@ -19,8 +19,8 @@
   },
   {
     "ID": 3,
-    "Name": "Name_3",
-    "Description": "Description_3",
+    "Name": "The Archivist's Map",
+    "Description": "Adventure story about a librarian and a hidden atlas.",
     "ReleaseDate": "2016-02-05T09:15:00",
     "DiscontinuedDate": "2017-05-22T08:30:00",
     "Rating": 4,
@@ -28,8 +28,8 @@
   },
   {
     "ID": 4,
-    "Name": "Name_4",
-    "Description": "Description_4",
+    "Name": "Cooking with Time",
+    "Description": "Whimsical nonfiction about recipes across centuries.",
     "ReleaseDate": "2017-07-19T12:00:00",
     "DiscontinuedDate": "2019-03-01T10:30:00",
     "Rating": 3,
@@ -37,8 +37,8 @@
   },
   {
     "ID": 5,
-    "Name": "Name_5",
-    "Description": "Description_5",
+    "Name": "Rivers of Stone",
+    "Description": "Historical drama set along an ancient trade route.",
     "ReleaseDate": "2018-11-11T08:45:00",
     "DiscontinuedDate": "2019-09-14T16:45:00",
     "Rating": 8,
@@ -46,8 +46,8 @@
   },
   {
     "ID": 6,
-    "Name": "Name_6",
-    "Description": "Description_6",
+    "Name": "Notes from the Orchard",
+    "Description": "Essays on memory, seasons, and rural life.",
     "ReleaseDate": "2020-04-23T14:20:00",
     "DiscontinuedDate": "2021-01-12T09:10:00",
     "Rating": 9,
@@ -55,8 +55,8 @@
   },
   {
     "ID": 7,
-    "Name": "Name_7",
-    "Description": "Description_7",
+    "Name": "The Last Lighthouse",
+    "Description": "Contemporary fiction about solitude and resilience.",
     "ReleaseDate": "2021-12-02T17:05:00",
     "DiscontinuedDate": "2022-06-30T13:10:00",
     "Rating": 6,

@@ -4,7 +4,6 @@
         <Title text="OData V2 Model" level="H3"/>
         <Table items="{oDataV2>/Products}">
         <columns>
-            <Column><Text text="ID"/></Column>
             <Column><Text text="Name"/></Column>
             <Column><Text text="Description"/></Column>
             <Column><Text text="ReleaseDate"/></Column>
@@ -15,7 +14,6 @@
         <items>
             <ColumnListItem>
             <cells>
-                <Text text="{oDataV2>ID}"/>
                 <Text text="{oDataV2>Name}"/>
                 <Text text="{oDataV2>Description}"/>
                 <Text text="{
