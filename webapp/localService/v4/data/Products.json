@@ -1,0 +1,65 @@
+[
+  {
+    "ID": 1,
+    "Name": "Name_1",
+    "Description": "Description_1",
+    "ReleaseDate": "2011-08-31T15:31:03.000Z",
+    "DiscontinuedDate": "2004-03-17T16:31:03.000Z",
+    "Rating": 7649,
+    "Price": 627.66
+  },
+  {
+    "ID": 2,
+    "Name": "Name_2",
+    "Description": "Description_2",
+    "ReleaseDate": "2014-11-21T16:31:03.000Z",
+    "DiscontinuedDate": "2015-02-10T11:00:00.000Z",
+    "Rating": 1200,
+    "Price": 18.99
+  },
+  {
+    "ID": 3,
+    "Name": "Name_3",
+    "Description": "Description_3",
+    "ReleaseDate": "2016-02-05T09:15:00.000Z",
+    "DiscontinuedDate": "2017-05-22T08:30:00.000Z",
+    "Rating": 3100,
+    "Price": 42.5
+  },
+  {
+    "ID": 4,
+    "Name": "Name_4",
+    "Description": "Description_4",
+    "ReleaseDate": "2017-07-19T12:00:00.000Z",
+    "DiscontinuedDate": "2019-03-01T10:30:00.000Z",
+    "Rating": 980,
+    "Price": 75.0
+  },
+  {
+    "ID": 5,
+    "Name": "Name_5",
+    "Description": "Description_5",
+    "ReleaseDate": "2018-11-11T08:45:00.000Z",
+    "DiscontinuedDate": "2019-09-14T16:45:00.000Z",
+    "Rating": 2200,
+    "Price": 129.99
+  },
+  {
+    "ID": 6,
+    "Name": "Name_6",
+    "Description": "Description_6",
+    "ReleaseDate": "2020-04-23T14:20:00.000Z",
+    "DiscontinuedDate": "2021-01-12T09:10:00.000Z",
+    "Rating": 4050,
+    "Price": 9.99
+  },
+  {
+    "ID": 7,
+    "Name": "Name_7",
+    "Description": "Description_7",
+    "ReleaseDate": "2021-12-02T17:05:00.000Z",
+    "DiscontinuedDate": "2022-06-30T13:10:00.000Z",
+    "Rating": 1500,
+    "Price": 250.75
+  }
+]
