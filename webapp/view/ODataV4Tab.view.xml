@@ -18,11 +18,12 @@
                 <Text text="{oDataV4>Description}"/>
                 <Text text="{
                             path: 'oDataV4>ReleaseDate',
-                            type: 'sap.ui.model.odata.type.Date'
+                            type: 'sap.ui.model.odata.type.DateTimeOffset'
                             }"/>
                 <Text text="{
                             path: 'oDataV4>DiscontinuedDate',
-                            type: 'sap.ui.model.odata.type.Date'}"/>
+                            type: 'sap.ui.model.odata.type.DateTimeOffset'
+                            }"/>
                 <Text text="{oDataV4>Rating}"/>
                 <ObjectNumber number="{oDataV4>Price}"/>
             </cells>
