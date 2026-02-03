@@ -54,15 +54,16 @@ sap.ui.define(
           .getParent()
           .getModel("record")
           .getData();
+
         this.getModel("oDataV2").create("/Products", oDialogData, {
           success: () => {
             MessageToast.show(this.getI18nText("msgCreateSuccess"));
-            this.oDialog.close();
           },
           error: () => {
             MessageBox.error(this.getI18nText("msgCreateError"));
           },
         });
+
         this.onCloseDialog(oEvent);
       },
 
