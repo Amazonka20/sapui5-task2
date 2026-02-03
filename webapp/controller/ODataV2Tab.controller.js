@@ -41,19 +41,24 @@ sap.ui.define(
         const oTable = this.byId("booksTableV2");
         const aContexts = oTable.getSelectedContexts(true);
         const oModel = this.getModel("oDataV2");
+        const iDeletedRecords = aContexts.length;
 
         aContexts.forEach((oContext) => {
-          const sName = oContext.getProperty("Name");
-          oModel.remove(oContext.getPath(), {
-            success: () => {
-              MessageToast.show(this.getI18nText("msgDeleteSuccess", [sName]));
-              this._resetSelection(oTable);
-            },
-            error: () => {
-              MessageToast.show(this.getI18nText("msgDeleteError", [sName]));
-              this._resetSelection(oTable);
-            },
-          });
+          oContext.delete();
+        });
+        oModel.submitChanges({
+          success: () => {
+            MessageToast.show(
+              this.getI18nText("msgDeleteSuccess", [iDeletedRecords])
+            );
+            this._resetSelection(oTable);
+          },
+          error: () => {
+            MessageToast.show(
+              this.getI18nText("msgDeleteError", [iDeletedRecords])
+            );
+            this._resetSelection(oTable);
+          },
         });
       },
 
