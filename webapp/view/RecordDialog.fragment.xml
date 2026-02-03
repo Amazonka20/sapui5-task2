@@ -1,35 +1,35 @@
 <core:FragmentDefinition
   xmlns="sap.m"
   xmlns:core="sap.ui.core">
-  <Dialog id="recordDialog" title="{i18n>dialogTitleAddRecord}" class="sapUiContentPadding">
+  <Dialog id="dialogV2" title="{i18n>dialogTitleAddRecord}" class="sapUiContentPadding">
     <content>
       <VBox width="100%">
 
         <Label text="{i18n>labelName}" required="true"/>
-        <Input id="inpRecordName" value="{record>/Name}" />
+        <Input id="inpNameV2" value="{oDataV2>Name}" />
 
         <Label text="{i18n>labelDescription}" class="sapUiSmallMarginTop" required="true"/>
         <TextArea
-                id="inpRecordDescription"
-                value="{record>/Description}"
+                id="inpDescriptionV2"
+                value="{oDataV2>Description}"
                 rows="4"
                 width="100%"
                 />
         <Label text="{i18n>labelReleaseDate}" class="sapUiSmallMarginTop" required="true"/>
-        <DatePicker id="dpRecordReleaseDate" dateValue="{record>/ReleaseDate}" />
+        <DatePicker id="dpReleaseDateV2" dateValue="{oDataV2>ReleaseDate}" />
 
         <Label text="{i18n>labelDiscontinuedDate}" class="sapUiSmallMarginTop" required="true"/>
-        <DatePicker id="dpRecordDiscontinuedDate" dateValue="{record>/DiscontinuedDate}" />
+        <DatePicker id="dpDiscontinuedDateV2" dateValue="{oDataV2>DiscontinuedDate}" />
 
         <Label text="{i18n>labelRating}" class="sapUiSmallMarginTop" required="true"/>
-        <Input id="inpRecordRating" type="Number" value="{record>/Rating}" />
+        <Input id="inpRatingV2" type="Number" value="{oDataV2>Rating}" />
 
         <Label text="{i18n>labelPrice}" class="sapUiSmallMarginTop" required="true"/>
         <Input 
-                id="inpRecordPrice" 
+                id="inpPriceV2" 
                 type="Number" 
                 value="{
-                        path: 'record>/Price', 
+                        path: 'oDataV2>Price', 
                         type: 'sap.ui.model.type.Float'}" />
       </VBox>
     </content>

@@ -40,8 +40,13 @@ sap.ui.define(
 
       async onOpenAddDialog() {
         const oDialog = await this._getDialog();
-        oDialog.getModel("record").setData(this._getEmptyRecord());
-        this._resetDialogValidation();
+        this._oTransientContext = this.getModel("oDataV2").createEntry(
+          "/Products",
+          {
+            properties: this._getEmptyRecord(),
+          }
+        );
+        oDialog.setBindingContext(this._oTransientContext, "oDataV2");
         oDialog.open();
       },
 
@@ -49,64 +54,69 @@ sap.ui.define(
         if (!this._validateDialog()) {
           return;
         }
-        const oDialogData = oEvent
-          .getSource()
-          .getParent()
-          .getModel("record")
-          .getData();
 
-        this.getModel("oDataV2").create("/Products", oDialogData, {
-          success: () => {
-            MessageToast.show(this.getI18nText("msgCreateSuccess"));
-          },
-          error: () => {
-            MessageBox.error(this.getI18nText("msgCreateError"));
-          },
-        });
+        // this.getModel("oDataV2").submitChanges({
+        //   success: () => {
+        //     MessageToast.show(this.getI18nText("msgCreateSuccess"));
+        //     this.onCloseDialog(oEvent);
+        //   },
+        //   error: () => {
+        //     MessageBox.error(this.getI18nText("msgCreateError"));
+        //   },
+        // });
 
-        this.onCloseDialog(oEvent);
+        // this._oTransientContext.created().then(() => {
+        //   MessageToast.show(this.getI18nText("msgCreateSuccess"));
+        //   this.onCloseDialog(oEvent);
+        // });
       },
 
       onCloseDialog(oEvent) {
         const oDialog = oEvent.getSource().getParent();
+        this.getModel("oDataV2").resetChanges();
+        this._resetDialogValidation();
         oDialog.close();
       },
 
       _validateDialog() {
+        const oData = this.oDialog.getBindingContext("oDataV2").getObject();
+
+        console.log(oData);
+
         return DialogValidator.validateDialog({
-          data: this.oDialog.getModel("record").getData() || {},
+          data: oData,
           getI18nText: this.getI18nText.bind(this),
           fields: [
             {
               key: "Name",
-              control: this.byId("inpRecordName"),
+              control: this.byId("inpNameV2"),
               required: true,
             },
             {
               key: "Description",
-              control: this.byId("inpRecordDescription"),
+              control: this.byId("inpDescriptionV2"),
               required: true,
             },
             {
               key: "ReleaseDate",
-              control: this.byId("dpRecordReleaseDate"),
+              control: this.byId("dpReleaseDateV2"),
               required: true,
               type: "date",
             },
             {
               key: "DiscontinuedDate",
-              control: this.byId("dpRecordDiscontinuedDate"),
+              control: this.byId("dpDiscontinuedDateV2"),
               required: true,
               type: "date",
             },
             {
               key: "Rating",
-              control: this.byId("inpRecordRating"),
+              control: this.byId("inpRatingV2"),
               required: true,
             },
             {
               key: "Price",
-              control: this.byId("inpRecordPrice"),
+              control: this.byId("inpPriceV2"),
               required: true,
             },
           ],
@@ -116,12 +126,12 @@ sap.ui.define(
       _resetDialogValidation() {
         DialogValidator.resetDialogValidation({
           controls: [
-            this.byId("inpRecordName"),
-            this.byId("inpRecordDescription"),
-            this.byId("dpRecordReleaseDate"),
-            this.byId("dpRecordDiscontinuedDate"),
-            this.byId("inpRecordRating"),
-            this.byId("inpRecordPrice"),
+            this.byId("inpNameV2"),
+            this.byId("inpDescriptionV2"),
+            this.byId("dpReleaseDateV2"),
+            this.byId("dpDiscontinuedDateV2"),
+            this.byId("inpRatingV2"),
+            this.byId("inpPriceV2"),
           ],
         });
       },
@@ -161,9 +171,7 @@ sap.ui.define(
           this.oDialog = await this.loadFragment({
             name: "project2.view.RecordDialog",
           });
-
-          const oTemp = new JSONModel(this._getEmptyRecord());
-          this.oDialog.setModel(oTemp, "record");
+          this.getView().addDependent(this.oDialog);
         }
         return this.oDialog;
       },
