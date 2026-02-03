@@ -55,20 +55,17 @@ sap.ui.define(
           return;
         }
 
-        // this.getModel("oDataV2").submitChanges({
-        //   success: () => {
-        //     MessageToast.show(this.getI18nText("msgCreateSuccess"));
-        //     this.onCloseDialog(oEvent);
-        //   },
-        //   error: () => {
-        //     MessageBox.error(this.getI18nText("msgCreateError"));
-        //   },
-        // });
+        this.getModel("oDataV2").submitChanges();
 
-        // this._oTransientContext.created().then(() => {
-        //   MessageToast.show(this.getI18nText("msgCreateSuccess"));
-        //   this.onCloseDialog(oEvent);
-        // });
+        this._oTransientContext.created().then(
+          () => {
+            MessageToast.show(this.getI18nText("msgCreateSuccess"));
+            this.onCloseDialog(oEvent);
+          },
+          () => {
+            MessageToast.show(this.getI18nText("msgCreateError"));
+          }
+        );
       },
 
       onCloseDialog(oEvent) {
@@ -80,8 +77,6 @@ sap.ui.define(
 
       _validateDialog() {
         const oData = this.oDialog.getBindingContext("oDataV2").getObject();
-
-        console.log(oData);
 
         return DialogValidator.validateDialog({
           data: oData,
@@ -171,7 +166,6 @@ sap.ui.define(
           this.oDialog = await this.loadFragment({
             name: "project2.view.RecordDialog",
           });
-          this.getView().addDependent(this.oDialog);
         }
         return this.oDialog;
       },
