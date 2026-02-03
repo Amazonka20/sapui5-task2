@@ -5,8 +5,8 @@ sap.ui.define(
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/m/MessageBox",
-    "sap/ui/core/library",
     "project2/model/formatter",
+    "project2/utils/DialogValidator",
   ],
   (
     BaseController,
@@ -14,11 +14,11 @@ sap.ui.define(
     Filter,
     FilterOperator,
     MessageBox,
-    CoreLibrary,
-    formatter
+    formatter,
+    DialogValidator
   ) => {
     "use strict";
-    const { ValueState } = CoreLibrary;
+
     return BaseController.extend("project2.controller.JsonTab", {
       formatter: formatter,
       onInit() {
@@ -144,80 +144,37 @@ sap.ui.define(
       },
 
       _validateDialog() {
-        const oNewBook = this.oDialog.getModel("newBook").getData() || {};
-
-        const oNameInput = this.byId("inpName");
-        const oAuthorInput = this.byId("inpAuthor");
-        const oGenreInput = this.byId("inpGenre");
-        const oQuantityInput = this.byId("inpQty");
-        const oReleaseDatePicker = this.byId("dpReleaseDate");
-
-        let bIsValid = true;
-
-        const fnSetError = (oControl, sText) => {
-          oControl.setValueState(ValueState.Error);
-          oControl.setValueStateText(sText);
-          bIsValid = false;
-        };
-
-        const fnClearError = (oControl) => {
-          oControl.setValueState(ValueState.None);
-          oControl.setValueStateText("");
-        };
-
-        const aRequiredChecks = [
-          { sKey: "Name", oControl: oNameInput },
-          { sKey: "Author", oControl: oAuthorInput },
-          { sKey: "Genre", oControl: oGenreInput },
-          { sKey: "ReleaseDate", oControl: oReleaseDatePicker },
-          { sKey: "AvailableQuantity", oControl: oQuantityInput },
-        ];
-
-        aRequiredChecks.forEach(({ sKey, oControl }) => {
-          if (!String(oNewBook[sKey] ?? "").trim()) {
-            fnSetError(oControl, this.getI18nText("errRequired"));
-          } else {
-            fnClearError(oControl);
-          }
+        return DialogValidator.validateDialog({
+          data: this.oDialog.getModel("newBook").getData() || {},
+          getI18nText: this.getI18nText.bind(this),
+          fields: [
+            { key: "Name", control: this.byId("inpName"), required: true },
+            { key: "Author", control: this.byId("inpAuthor"), required: true },
+            { key: "Genre", control: this.byId("inpGenre"), required: true },
+            {
+              key: "ReleaseDate",
+              control: this.byId("dpReleaseDate"),
+              required: true,
+              type: "date",
+            },
+            {
+              key: "AvailableQuantity",
+              control: this.byId("inpQty"),
+              required: true,
+            },
+          ],
         });
-
-        const oSelectedDate = oReleaseDatePicker.getDateValue();
-
-        if (oSelectedDate) {
-          const oToday = new Date();
-          oToday.setHours(0, 0, 0, 0);
-
-          const oPickedDate = new Date(oSelectedDate);
-          oPickedDate.setHours(0, 0, 0, 0);
-
-          if (oPickedDate > oToday) {
-            fnSetError(
-              oReleaseDatePicker,
-              this.getI18nText("errDateNotFuture")
-            );
-          } else {
-            fnClearError(oReleaseDatePicker);
-          }
-        }
-
-        return bIsValid;
       },
 
       _resetDialogValidation() {
-        const aControlIds = [
-          "inpName",
-          "inpAuthor",
-          "inpGenre",
-          "inpQty",
-          "dpReleaseDate",
-        ];
-
-        aControlIds.forEach((sId) => {
-          const oCtrl = this.byId(sId);
-          if (!oCtrl) return;
-
-          oCtrl.setValueState(ValueState.None);
-          if (oCtrl.setValueStateText) oCtrl.setValueStateText("");
+        DialogValidator.resetDialogValidation({
+          controls: [
+            this.byId("inpName"),
+            this.byId("inpAuthor"),
+            this.byId("inpGenre"),
+            this.byId("inpQty"),
+            this.byId("dpReleaseDate"),
+          ],
         });
       },
 

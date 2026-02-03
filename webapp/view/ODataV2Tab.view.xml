@@ -9,6 +9,7 @@
         items="{oDataV2>/Products}">
         <headerToolbar>
         <Toolbar>
+           <Button text="{i18n>btnAdd}" press="onOpenAddDialog"  />
            <Button text="{i18n>btnDelete}" press="onDelete" enabled="{view>/canDelete}" type="Reject"/>
         </Toolbar>
         </headerToolbar>
