@@ -4,8 +4,9 @@ sap.ui.define(
     "sap/ui/model/json/JSONModel",
     "sap/m/MessageBox",
     "sap/m/MessageToast",
+    "project2/utils/DialogValidator",
   ],
-  (BaseController, JSONModel, MessageBox, MessageToast) => {
+  (BaseController, JSONModel, MessageBox, MessageToast, DialogValidator) => {
     "use strict";
 
     return BaseController.extend("project2.controller.ODataV2Tab", {
@@ -37,6 +38,101 @@ sap.ui.define(
         this.getModel("view").setProperty("/canDelete", bCanDelete);
       },
 
+      async onOpenAddDialog() {
+        const oDialog = await this._getDialog();
+        this._oTransientContext = this.getModel("oDataV2").createEntry(
+          "/Products",
+          {
+            properties: this._getEmptyRecord(),
+          }
+        );
+
+        oDialog.setBindingContext(this._oTransientContext, "oDataV2");
+        oDialog.open();
+      },
+
+      onSaveDialog(oEvent) {
+        if (!this._validateDialog()) {
+          return;
+        }
+
+        this.getModel("oDataV2").submitChanges({
+          success: () => {
+            MessageToast.show(this.getI18nText("msgCreateSuccess"));
+            this._resetDialogValidation();
+          },
+          error: () => {
+            MessageToast.show(this.getI18nText("msgCreateError"));
+            this._resetDialogValidation();
+          },
+        });
+
+        this.onCloseDialog(oEvent);
+      },
+
+      onCloseDialog(oEvent) {
+        const oDialog = oEvent.getSource().getParent();
+        this._resetDialogValidation();
+        this._oTransientContext.delete();
+        oDialog.close();
+      },
+
+      _validateDialog() {
+        const oData = this.oDialog.getBindingContext("oDataV2").getObject();
+
+        return DialogValidator.validateDialog({
+          data: oData,
+          getI18nText: this.getI18nText.bind(this),
+          fields: [
+            {
+              key: "Name",
+              control: this.byId("inpNameV2"),
+              required: true,
+            },
+            {
+              key: "Description",
+              control: this.byId("inpDescriptionV2"),
+              required: true,
+            },
+            {
+              key: "ReleaseDate",
+              control: this.byId("dpReleaseDateV2"),
+              required: true,
+              type: "date",
+            },
+            {
+              key: "DiscontinuedDate",
+              control: this.byId("dpDiscontinuedDateV2"),
+              required: false,
+              type: "date",
+            },
+            {
+              key: "Rating",
+              control: this.byId("inpRatingV2"),
+              required: true,
+            },
+            {
+              key: "Price",
+              control: this.byId("inpPriceV2"),
+              required: true,
+            },
+          ],
+        });
+      },
+
+      _resetDialogValidation() {
+        DialogValidator.resetDialogValidation({
+          controls: [
+            this.byId("inpNameV2"),
+            this.byId("inpDescriptionV2"),
+            this.byId("dpReleaseDateV2"),
+            this.byId("dpDiscontinuedDateV2"),
+            this.byId("inpRatingV2"),
+            this.byId("inpPriceV2"),
+          ],
+        });
+      },
+
       _doDelete() {
         const oTable = this.byId("booksTableV2");
         const aContexts = oTable.getSelectedContexts(true);
@@ -65,6 +161,26 @@ sap.ui.define(
       _resetSelection(oTable) {
         oTable.removeSelections(true);
         this.getModel("view").setProperty("/canDelete", false);
+      },
+
+      async _getDialog() {
+        if (!this.oDialog) {
+          this.oDialog = await this.loadFragment({
+            name: "project2.view.RecordDialog",
+          });
+        }
+        return this.oDialog;
+      },
+
+      _getEmptyRecord() {
+        return {
+          Name: "",
+          Description: "",
+          ReleaseDate: null,
+          DiscontinuedDate: null,
+          Rating: "",
+          Price: "",
+        };
       },
     });
   }

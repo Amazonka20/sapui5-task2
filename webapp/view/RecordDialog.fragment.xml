@@ -1,0 +1,43 @@
+<core:FragmentDefinition
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core">
+  <Dialog id="dialogV2" title="{i18n>dialogTitleAddRecord}" class="sapUiContentPadding">
+    <content>
+      <VBox width="100%">
+
+        <Label text="{i18n>labelName}" required="true"/>
+        <Input id="inpNameV2" value="{oDataV2>Name}" />
+
+        <Label text="{i18n>labelDescription}" class="sapUiSmallMarginTop" required="true"/>
+        <TextArea
+                id="inpDescriptionV2"
+                value="{oDataV2>Description}"
+                rows="4"
+                width="100%"
+                />
+        <Label text="{i18n>labelReleaseDate}" class="sapUiSmallMarginTop" required="true"/>
+        <DatePicker id="dpReleaseDateV2" dateValue="{oDataV2>ReleaseDate}" />
+
+        <Label text="{i18n>labelDiscontinuedDate}" class="sapUiSmallMarginTop"/>
+        <DatePicker id="dpDiscontinuedDateV2" dateValue="{oDataV2>DiscontinuedDate}" />
+
+        <Label text="{i18n>labelRating}" class="sapUiSmallMarginTop" required="true"/>
+        <Input id="inpRatingV2" type="Number" value="{oDataV2>Rating}" />
+
+        <Label text="{i18n>labelPrice}" class="sapUiSmallMarginTop" required="true"/>
+        <Input 
+                id="inpPriceV2" 
+                type="Number" 
+                value="{
+                        path: 'oDataV2>Price', 
+                        type: 'sap.ui.model.type.Float'}" />
+      </VBox>
+    </content>
+    <beginButton>
+      <Button text="{i18n>btnSave}" type="Emphasized" press="onSaveDialog"/>
+    </beginButton>
+    <endButton>
+      <Button text="{i18n>btnClose}" press="onCloseDialog"/>
+    </endButton>
+  </Dialog>
+</core:FragmentDefinition>

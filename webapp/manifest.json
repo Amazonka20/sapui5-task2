@@ -74,7 +74,8 @@
         "type": "sap.ui.model.odata.v2.ODataModel",
         "dataSource": "oDataServiceV2",
         "settings": {
-          "useBatch": true
+          "useBatch": true,
+          "defaultBindingMode": "TwoWay"
         }
       },
       "oDataV4": {
