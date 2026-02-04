@@ -80,9 +80,8 @@ sap.ui.define(
 
       onCloseDialog(oEvent) {
         const oDialog = oEvent.getSource().getParent();
-        this.getModel("oDataV2").resetChanges();
         this._resetDialogValidation();
-        this.getModel("view").setProperty("/ediMode", false);
+        this._oTransientContext.delete();
         oDialog.close();
       },
 
