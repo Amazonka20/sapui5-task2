@@ -14,12 +14,13 @@
         </Toolbar>
         </headerToolbar>
         <columns>
-            <Column><Text text="Name"/></Column>
-            <Column><Text text="Description"/></Column>
-            <Column><Text text="ReleaseDate"/></Column>
-            <Column><Text text="DiscontinuedDate"/></Column>
-            <Column><Text text="Rating"/></Column>
-            <Column><Text text="Price"/></Column>
+            <Column><Text text="{i18n>colName}"/></Column>
+            <Column><Text text="{i18n>colDescription}"/></Column>
+            <Column><Text text="{i18n>colReleaseDate}"/></Column>
+            <Column><Text text="{i18n>colDiscontinuedDate}"/></Column>
+            <Column><Text text="{i18n>colRating}"/></Column>
+            <Column><Text text="{i18n>colPrice}"/></Column>
+            <Column><Text text="{i18n>colActions}"/></Column>
         </columns>
         <items>
             <ColumnListItem>
@@ -36,6 +37,7 @@
                             }"/>
                 <Text text="{oDataV2>Rating}"/>
                 <ObjectNumber number="{oDataV2>Price}"/>
+                <Button text="{i18n>btnEdit}" press="onEdit" type="Transparent"/>
             </cells>
             </ColumnListItem>
         </items>
