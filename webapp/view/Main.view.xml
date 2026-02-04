@@ -4,9 +4,9 @@
     <Page id="page" title="{i18n>title}">
         <IconTabBar expandable="false">
             <items>
-                <!-- <IconTabFilter key="json" text="JSON Model">
+                <IconTabFilter key="json" text="JSON Model">
                     <mvc:XMLView viewName="project2.view.JsonTab"/>
-                </IconTabFilter> -->
+                </IconTabFilter>
                 <IconTabFilter key="odataV2" text="OData V2 Model">
                     <mvc:XMLView viewName="project2.view.ODataV2Tab"/>
                 </IconTabFilter>
