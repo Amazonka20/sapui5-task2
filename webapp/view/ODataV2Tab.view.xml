@@ -11,6 +11,13 @@
         <Toolbar>
            <Button text="{i18n>btnAdd}" press="onOpenAddDialog"  />
            <Button text="{i18n>btnDelete}" press="onDelete" enabled="{view>/canDelete}" type="Reject"/>
+           <ToolbarSpacer/>
+           <Input 
+                    placeholder="{i18n>filterLabel}" 
+                    value="{view>/sFilter}" 
+                    valueLiveUpdate="true" 
+                    liveChange="onFilterLiveChange" 
+                    width="40%"/>
         </Toolbar>
         </headerToolbar>
         <columns>

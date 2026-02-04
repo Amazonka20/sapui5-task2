@@ -5,8 +5,18 @@ sap.ui.define(
     "sap/m/MessageBox",
     "sap/m/MessageToast",
     "project2/utils/DialogValidator",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator",
   ],
-  (BaseController, JSONModel, MessageBox, MessageToast, DialogValidator) => {
+  (
+    BaseController,
+    JSONModel,
+    MessageBox,
+    MessageToast,
+    DialogValidator,
+    Filter,
+    FilterOperator
+  ) => {
     "use strict";
 
     return BaseController.extend("project2.controller.ODataV2Tab", {
@@ -14,6 +24,7 @@ sap.ui.define(
         const oUIModel = new JSONModel({
           canDelete: false,
           bEditMode: false,
+          sFilter: "",
         });
 
         this.getView().setModel(oUIModel, "view");
@@ -93,6 +104,19 @@ sap.ui.define(
 
         this.getModel("view").setProperty("/bEditMode", true);
         oDialog.open();
+      },
+
+      onFilterLiveChange() {
+        const sQuery = this.getModel("view").getProperty("/sFilter");
+
+        clearTimeout(this._filterTimer);
+        this._filterTimer = setTimeout(() => {
+          const oTable = this.byId("booksTableV2");
+          const oBinding = oTable.getBinding("items");
+          const oFilter = new Filter("Name", FilterOperator.Contains, sQuery);
+
+          oBinding.filter([oFilter]);
+        }, 400);
       },
 
       _validateDialog() {
