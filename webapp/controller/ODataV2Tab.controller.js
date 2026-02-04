@@ -13,7 +13,7 @@ sap.ui.define(
       onInit() {
         const oUIModel = new JSONModel({
           canDelete: false,
-          editMode: false,
+          bEditMode: false,
         });
 
         this.getView().setModel(oUIModel, "view");
@@ -47,6 +47,7 @@ sap.ui.define(
             properties: this._getEmptyRecord(),
           }
         );
+        this.getModel("view").setProperty("/bEditMode", false);
         oDialog.setBindingContext(this._oTransientContext, "oDataV2");
         oDialog.open();
       },
@@ -55,20 +56,25 @@ sap.ui.define(
         if (!this._validateDialog()) {
           return;
         }
+        const bEditMode = this.getModel("view").getProperty("/bEditMode");
 
-        this.getModel("oDataV2").submitChanges();
-        const editMode = this.getModel("view").getProperty("/editMode");
+        this.getModel("oDataV2").submitChanges({
+          success: () => {
+            MessageToast.show(
+              this.getI18nText(
+                bEditMode ? "msgUpdateSuccess" : "msgCreateSuccess"
+              )
+            );
+            this._resetDialogValidation();
+          },
+          error: () => {
+            MessageToast.show(
+              this.getI18nText(bEditMode ? "msgUpdateError" : "msgCreateError")
+            );
+            this._resetDialogValidation();
+          },
+        });
 
-        if (!editMode) {
-          this._oTransientContext.created().then(
-            () => {
-              MessageToast.show(this.getI18nText("msgCreateSuccess"));
-            },
-            () => {
-              MessageToast.show(this.getI18nText("msgCreateError"));
-            }
-          );
-        }
         this.onCloseDialog(oEvent);
       },
 
@@ -84,9 +90,8 @@ sap.ui.define(
         const oDialog = await this._getDialog();
         const oDialogContext = oEvent.getSource().getBindingContext("oDataV2");
         oDialog.setBindingContext(oDialogContext, "oDataV2");
-        this.getModel("view").setProperty("/editMode", true);
-        console.log("oDialogContext", oDialogContext);
 
+        this.getModel("view").setProperty("/bEditMode", true);
         oDialog.open();
       },
 
@@ -116,7 +121,7 @@ sap.ui.define(
             {
               key: "DiscontinuedDate",
               control: this.byId("dpDiscontinuedDateV2"),
-              required: true,
+              required: false,
               type: "date",
             },
             {
