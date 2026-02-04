@@ -92,23 +92,23 @@ sap.ui.define(
               )
             );
             this._resetDialogValidation();
+            this.onCloseDialog(oEvent);
           },
           error: () => {
             MessageToast.show(
               this.getI18nText(bEditMode ? "msgUpdateError" : "msgCreateError")
             );
             this._resetDialogValidation();
+            this.onCloseDialog(oEvent);
           },
         });
-
-        this.onCloseDialog(oEvent);
       },
 
       onCloseDialog(oEvent) {
         const oDialog = oEvent.getSource().getParent();
-        this.getModel("oDataV2").resetChanges();
         this._resetDialogValidation();
         this.getModel("view").setProperty("/ediMode", false);
+        this._oTransientContext?.delete();
         oDialog.close();
       },
 
