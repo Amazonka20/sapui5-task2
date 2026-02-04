@@ -46,6 +46,7 @@ sap.ui.define(
             properties: this._getEmptyRecord(),
           }
         );
+
         oDialog.setBindingContext(this._oTransientContext, "oDataV2");
         oDialog.open();
       },
@@ -55,23 +56,24 @@ sap.ui.define(
           return;
         }
 
-        this.getModel("oDataV2").submitChanges();
-
-        this._oTransientContext.created().then(
-          () => {
+        this.getModel("oDataV2").submitChanges({
+          success: () => {
             MessageToast.show(this.getI18nText("msgCreateSuccess"));
-            this.onCloseDialog(oEvent);
+            this._resetDialogValidation();
           },
-          () => {
+          error: () => {
             MessageToast.show(this.getI18nText("msgCreateError"));
-          }
-        );
+            this._resetDialogValidation();
+          },
+        });
+
+        this.onCloseDialog(oEvent);
       },
 
       onCloseDialog(oEvent) {
         const oDialog = oEvent.getSource().getParent();
-        this.getModel("oDataV2").resetChanges();
         this._resetDialogValidation();
+        this._oTransientContext.delete();
         oDialog.close();
       },
 
@@ -101,7 +103,7 @@ sap.ui.define(
             {
               key: "DiscontinuedDate",
               control: this.byId("dpDiscontinuedDateV2"),
-              required: true,
+              required: false,
               type: "date",
             },
             {
