@@ -7,6 +7,7 @@ sap.ui.define(
     "project2/utils/DialogValidator",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
+    "sap/ui/model/Sorter",
   ],
   (
     BaseController,
@@ -15,7 +16,8 @@ sap.ui.define(
     MessageToast,
     DialogValidator,
     Filter,
-    FilterOperator
+    FilterOperator,
+    Sorter
   ) => {
     "use strict";
 
@@ -25,6 +27,19 @@ sap.ui.define(
           canDelete: false,
           bEditMode: false,
           sFilter: "",
+          selectedColumn: "All",
+          columns: [
+            { key: "All", text: this.getI18nText("genreAll") },
+            { key: "Name", text: this.getI18nText("colName") },
+            { key: "Description", text: this.getI18nText("colDescription") },
+            { key: "ReleaseDate", text: this.getI18nText("colReleaseDate") },
+            {
+              key: "DiscontinuedDate",
+              text: this.getI18nText("colDiscontinuedDate"),
+            },
+            { key: "Rating", text: this.getI18nText("colRating") },
+            { key: "Price", text: this.getI18nText("colPrice") },
+          ],
         });
 
         this.getView().setModel(oUIModel, "view");
@@ -117,6 +132,16 @@ sap.ui.define(
 
           oBinding.filter([oFilter]);
         }, 400);
+      },
+
+      onSortChange() {
+        const sSelectedColumn =
+          this.getModel("view").getProperty("/selectedColumn");
+        const oTable = this.byId("booksTableV2");
+        const oBinding = oTable.getBinding("items");
+
+        const oSorter = new Sorter(sSelectedColumn, true);
+        oBinding.sort([oSorter]);
       },
 
       _validateDialog() {
