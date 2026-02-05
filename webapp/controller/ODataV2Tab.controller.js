@@ -188,7 +188,7 @@ sap.ui.define(
       async _getDialog() {
         if (!this.oDialog) {
           this.oDialog = await this.loadFragment({
-            name: "project2.fragments.RecordDialog",
+            name: "project2.fragments.ODataV2Dialog",
           });
         }
         return this.oDialog;
