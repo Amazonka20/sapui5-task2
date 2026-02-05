@@ -1,6 +1,7 @@
 <mvc:View controllerName="project2.controller.ODataV2Tab"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
         <Title text="OData V2 Model" level="H3"/>
         <Table 
         id="booksTableV2"
@@ -18,6 +19,9 @@
                     valueLiveUpdate="true" 
                     liveChange="onFilterLiveChange" 
                     width="40%"/>
+            <ComboBox items="{view>/columns}" selectedKey="{view>/selectedColumn}" change="onSortChange">
+                    <core:Item key="{view>key}" text="{view>text}" />
+            </ComboBox>
         </Toolbar>
         </headerToolbar>
         <columns>
