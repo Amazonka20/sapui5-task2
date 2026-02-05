@@ -5,14 +5,26 @@ sap.ui.define(
     "sap/m/MessageBox",
     "sap/m/MessageToast",
     "project2/utils/DialogValidator",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator",
   ],
-  (BaseController, JSONModel, MessageBox, MessageToast, DialogValidator) => {
+  (
+    BaseController,
+    JSONModel,
+    MessageBox,
+    MessageToast,
+    DialogValidator,
+    Filter,
+    FilterOperator
+  ) => {
     "use strict";
 
     return BaseController.extend("project2.controller.ODataV2Tab", {
       onInit() {
         const oUIModel = new JSONModel({
           canDelete: false,
+          bEditMode: false,
+          sFilter: "",
         });
 
         this.getView().setModel(oUIModel, "view");
@@ -46,6 +58,7 @@ sap.ui.define(
             properties: this._getEmptyRecord(),
           }
         );
+        this.getModel("view").setProperty("/bEditMode", false);
 
         oDialog.setBindingContext(this._oTransientContext, "oDataV2");
         oDialog.open();
@@ -55,10 +68,15 @@ sap.ui.define(
         if (!this._validateDialog()) {
           return;
         }
+        const bEditMode = this.getModel("view").getProperty("/bEditMode");
 
         this.getModel("oDataV2").submitChanges({
           success: () => {
-            MessageToast.show(this.getI18nText("msgCreateSuccess"));
+            MessageToast.show(
+              this.getI18nText(
+                bEditMode ? "msgUpdateSuccess" : "msgCreateSuccess"
+              )
+            );
             this._resetDialogValidation();
           },
           error: () => {
@@ -73,8 +91,31 @@ sap.ui.define(
       onCloseDialog(oEvent) {
         const oDialog = oEvent.getSource().getParent();
         this._resetDialogValidation();
+        this.getModel("view").setProperty("/ediMode", false);
         this._oTransientContext.delete();
         oDialog.close();
+      },
+
+      async onEdit(oEvent) {
+        const oDialog = await this._getDialog();
+        const oDialogContext = oEvent.getSource().getBindingContext("oDataV2");
+        oDialog.setBindingContext(oDialogContext, "oDataV2");
+
+        this.getModel("view").setProperty("/bEditMode", true);
+        oDialog.open();
+      },
+
+      onFilterLiveChange() {
+        const sQuery = this.getModel("view").getProperty("/sFilter");
+
+        clearTimeout(this._filterTimer);
+        this._filterTimer = setTimeout(() => {
+          const oTable = this.byId("booksTableV2");
+          const oBinding = oTable.getBinding("items");
+          const oFilter = new Filter("Name", FilterOperator.Contains, sQuery);
+
+          oBinding.filter([oFilter]);
+        }, 400);
       },
 
       _validateDialog() {
