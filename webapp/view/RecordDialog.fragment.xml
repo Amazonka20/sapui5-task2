@@ -18,7 +18,7 @@
         <Label text="{i18n>labelReleaseDate}" class="sapUiSmallMarginTop" required="true"/>
         <DatePicker id="dpReleaseDateV2" dateValue="{oDataV2>ReleaseDate}" />
 
-        <Label text="{i18n>labelDiscontinuedDate}" class="sapUiSmallMarginTop" required="true"/>
+        <Label text="{i18n>labelDiscontinuedDate}" class="sapUiSmallMarginTop"/>
         <DatePicker id="dpDiscontinuedDateV2" dateValue="{oDataV2>DiscontinuedDate}" />
 
         <Label text="{i18n>labelRating}" class="sapUiSmallMarginTop" required="true"/>

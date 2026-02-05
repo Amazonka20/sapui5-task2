@@ -59,6 +59,7 @@ sap.ui.define(
           }
         );
         this.getModel("view").setProperty("/bEditMode", false);
+
         oDialog.setBindingContext(this._oTransientContext, "oDataV2");
         oDialog.open();
       },
@@ -79,9 +80,7 @@ sap.ui.define(
             this._resetDialogValidation();
           },
           error: () => {
-            MessageToast.show(
-              this.getI18nText(bEditMode ? "msgUpdateError" : "msgCreateError")
-            );
+            MessageToast.show(this.getI18nText("msgCreateError"));
             this._resetDialogValidation();
           },
         });
@@ -91,9 +90,9 @@ sap.ui.define(
 
       onCloseDialog(oEvent) {
         const oDialog = oEvent.getSource().getParent();
-        this.getModel("oDataV2").resetChanges();
         this._resetDialogValidation();
         this.getModel("view").setProperty("/ediMode", false);
+        this._oTransientContext.delete();
         oDialog.close();
       },
 
