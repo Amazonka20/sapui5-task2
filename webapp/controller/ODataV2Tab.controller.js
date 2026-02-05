@@ -60,7 +60,7 @@ sap.ui.define(
       },
 
       onSelectionChange() {
-        const oTable = this.byId("booksTableV2");
+        const oTable = this._getBooksTable();
         const bCanDelete = oTable.getSelectedContexts(true).length > 0;
         this.getModel("view").setProperty("/canDelete", bCanDelete);
       },
@@ -126,7 +126,7 @@ sap.ui.define(
 
         clearTimeout(this._filterTimer);
         this._filterTimer = setTimeout(() => {
-          const oTable = this.byId("booksTableV2");
+          const oTable = this._getBooksTable();
           const oBinding = oTable.getBinding("items");
           const oFilter = new Filter("Name", FilterOperator.Contains, sQuery);
 
@@ -137,7 +137,7 @@ sap.ui.define(
       onSortChange() {
         const sSelectedColumn =
           this.getModel("view").getProperty("/selectedColumn");
-        const oTable = this.byId("booksTableV2");
+        const oTable = this._getBooksTable();
         const oBinding = oTable.getBinding("items");
 
         const oSorter = new Sorter(sSelectedColumn, true);
@@ -201,7 +201,7 @@ sap.ui.define(
       },
 
       _doDelete() {
-        const oTable = this.byId("booksTableV2");
+        const oTable = this._getBooksTable();
         const aContexts = oTable.getSelectedContexts(true);
         const oModel = this.getModel("oDataV2");
         const iDeletedRecords = aContexts.length;
@@ -237,6 +237,9 @@ sap.ui.define(
           });
         }
         return this.oDialog;
+      },
+      _getBooksTable() {
+        return this.byId("booksTableV2");
       },
 
       _getEmptyRecord() {
