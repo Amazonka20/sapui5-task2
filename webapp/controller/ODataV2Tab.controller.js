@@ -7,6 +7,7 @@ sap.ui.define(
     "project2/utils/DialogValidator",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
+    "sap/ui/model/Sorter",
   ],
   (
     BaseController,
@@ -15,7 +16,8 @@ sap.ui.define(
     MessageToast,
     DialogValidator,
     Filter,
-    FilterOperator
+    FilterOperator,
+    Sorter
   ) => {
     "use strict";
 
@@ -25,6 +27,19 @@ sap.ui.define(
           canDelete: false,
           bEditMode: false,
           sFilter: "",
+          selectedColumn: "All",
+          columns: [
+            { key: "All", text: this.getI18nText("genreAll") },
+            { key: "Name", text: this.getI18nText("colName") },
+            { key: "Description", text: this.getI18nText("colDescription") },
+            { key: "ReleaseDate", text: this.getI18nText("colReleaseDate") },
+            {
+              key: "DiscontinuedDate",
+              text: this.getI18nText("colDiscontinuedDate"),
+            },
+            { key: "Rating", text: this.getI18nText("colRating") },
+            { key: "Price", text: this.getI18nText("colPrice") },
+          ],
         });
 
         this.getView().setModel(oUIModel, "view");
@@ -45,7 +60,7 @@ sap.ui.define(
       },
 
       onSelectionChange() {
-        const oTable = this.byId("booksTableV2");
+        const oTable = this._getBooksTable();
         const bCanDelete = oTable.getSelectedContexts(true).length > 0;
         this.getModel("view").setProperty("/canDelete", bCanDelete);
       },
@@ -78,21 +93,21 @@ sap.ui.define(
               )
             );
             this._resetDialogValidation();
+            this.onCloseDialog(oEvent);
           },
           error: () => {
             MessageToast.show(this.getI18nText("msgCreateError"));
             this._resetDialogValidation();
+            this.onCloseDialog(oEvent);
           },
         });
-
-        this.onCloseDialog(oEvent);
       },
 
       onCloseDialog(oEvent) {
         const oDialog = oEvent.getSource().getParent();
         this._resetDialogValidation();
         this.getModel("view").setProperty("/ediMode", false);
-        this._oTransientContext.delete();
+        this._oTransientContext?.delete();
         oDialog.close();
       },
 
@@ -110,12 +125,22 @@ sap.ui.define(
 
         clearTimeout(this._filterTimer);
         this._filterTimer = setTimeout(() => {
-          const oTable = this.byId("booksTableV2");
+          const oTable = this._getBooksTable();
           const oBinding = oTable.getBinding("items");
           const oFilter = new Filter("Name", FilterOperator.Contains, sQuery);
 
           oBinding.filter([oFilter]);
         }, 400);
+      },
+
+      onSortChange() {
+        const sSelectedColumn =
+          this.getModel("view").getProperty("/selectedColumn");
+        const oTable = this._getBooksTable();
+        const oBinding = oTable.getBinding("items");
+
+        const oSorter = new Sorter(sSelectedColumn, true);
+        oBinding.sort([oSorter]);
       },
 
       _validateDialog() {
@@ -175,7 +200,7 @@ sap.ui.define(
       },
 
       _doDelete() {
-        const oTable = this.byId("booksTableV2");
+        const oTable = this._getBooksTable();
         const aContexts = oTable.getSelectedContexts(true);
         const oModel = this.getModel("oDataV2");
         const iDeletedRecords = aContexts.length;
@@ -211,6 +236,9 @@ sap.ui.define(
           });
         }
         return this.oDialog;
+      },
+      _getBooksTable() {
+        return this.byId("booksTableV2");
       },
 
       _getEmptyRecord() {
