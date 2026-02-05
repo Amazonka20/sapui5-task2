@@ -13,6 +13,7 @@ sap.ui.define(
       onInit() {
         const oUIModel = new JSONModel({
           canDelete: false,
+          bEditMode: false,
         });
 
         this.getView().setModel(oUIModel, "view");
@@ -46,7 +47,7 @@ sap.ui.define(
             properties: this._getEmptyRecord(),
           }
         );
-
+        this.getModel("view").setProperty("/bEditMode", false);
         oDialog.setBindingContext(this._oTransientContext, "oDataV2");
         oDialog.open();
       },
@@ -55,26 +56,47 @@ sap.ui.define(
         if (!this._validateDialog()) {
           return;
         }
+        const bEditMode = this.getModel("view").getProperty("/bEditMode");
 
         this.getModel("oDataV2").submitChanges({
           success: () => {
-            MessageToast.show(this.getI18nText("msgCreateSuccess"));
+            MessageToast.show(
+              this.getI18nText(
+                bEditMode ? "msgUpdateSuccess" : "msgCreateSuccess"
+              )
+            );
             this._resetDialogValidation();
+            this.onCloseDialog(oEvent);
           },
           error: () => {
-            MessageToast.show(this.getI18nText("msgCreateError"));
+            MessageToast.show(
+              this.getI18nText(bEditMode ? "msgUpdateError" : "msgCreateError")
+            );
             this._resetDialogValidation();
+            this.onCloseDialog(oEvent);
           },
         });
-
-        this.onCloseDialog(oEvent);
       },
 
       onCloseDialog(oEvent) {
         const oDialog = oEvent.getSource().getParent();
+        const sContextPath = oDialog.getBindingContext("oDataV2").getPath();
+        const bEditMode = this.getModel("view").getProperty("/bEditMode");
+
         this._resetDialogValidation();
-        this._oTransientContext.delete();
+        if (bEditMode) {
+          this.getModel("oDataV2").resetChanges([sContextPath]);
+        } else this._oTransientContext?.delete();
         oDialog.close();
+      },
+
+      async onEdit(oEvent) {
+        const oDialog = await this._getDialog();
+        const oDialogContext = oEvent.getSource().getBindingContext("oDataV2");
+        oDialog.setBindingContext(oDialogContext, "oDataV2");
+
+        this.getModel("view").setProperty("/bEditMode", true);
+        oDialog.open();
       },
 
       _validateDialog() {
@@ -166,7 +188,7 @@ sap.ui.define(
       async _getDialog() {
         if (!this.oDialog) {
           this.oDialog = await this.loadFragment({
-            name: "project2.view.RecordDialog",
+            name: "project2.fragments.ODataV2Dialog",
           });
         }
         return this.oDialog;
