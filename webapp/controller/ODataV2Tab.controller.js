@@ -74,6 +74,7 @@ sap.ui.define(
           }
         );
         this.getModel("view").setProperty("/bEditMode", false);
+
         oDialog.setBindingContext(this._oTransientContext, "oDataV2");
         oDialog.open();
       },
@@ -95,9 +96,7 @@ sap.ui.define(
             this.onCloseDialog(oEvent);
           },
           error: () => {
-            MessageToast.show(
-              this.getI18nText(bEditMode ? "msgUpdateError" : "msgCreateError")
-            );
+            MessageToast.show(this.getI18nText("msgCreateError"));
             this._resetDialogValidation();
             this.onCloseDialog(oEvent);
           },
