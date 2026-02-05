@@ -78,21 +78,27 @@ sap.ui.define(
               )
             );
             this._resetDialogValidation();
+            this.onCloseDialog(oEvent);
           },
           error: () => {
-            MessageToast.show(this.getI18nText("msgCreateError"));
+            MessageToast.show(
+              this.getI18nText(bEditMode ? "msgUpdateError" : "msgCreateError")
+            );
             this._resetDialogValidation();
+            this.onCloseDialog(oEvent);
           },
         });
-
-        this.onCloseDialog(oEvent);
       },
 
       onCloseDialog(oEvent) {
         const oDialog = oEvent.getSource().getParent();
+        const sContextPath = oDialog.getBindingContext("oDataV2").getPath();
+        const bEditMode = this.getModel("view").getProperty("/bEditMode");
+
         this._resetDialogValidation();
-        this.getModel("view").setProperty("/ediMode", false);
-        this._oTransientContext.delete();
+        if (bEditMode) {
+          this.getModel("oDataV2").resetChanges([sContextPath]);
+        } else this._oTransientContext?.delete();
         oDialog.close();
       },
 
@@ -207,7 +213,7 @@ sap.ui.define(
       async _getDialog() {
         if (!this.oDialog) {
           this.oDialog = await this.loadFragment({
-            name: "project2.view.RecordDialog",
+            name: "project2.fragments.ODataV2Dialog",
           });
         }
         return this.oDialog;
