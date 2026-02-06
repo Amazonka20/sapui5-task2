@@ -121,11 +121,21 @@
           "target": [
             "TargetMain"
           ]
+        },
+        {
+          "name": "ProductPage",
+          "pattern": "product/{ProductID}",
+          "target": [
+            "ProductTarget"
+          ]
         }
       ],
       "targets": {
         "TargetMain": {
           "name": "Main"
+        },
+        "ProductTarget": {
+          "name": "Product"
         }
       }
     },
