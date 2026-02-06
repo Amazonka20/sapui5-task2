@@ -2,17 +2,11 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
     <Page id="page" title="{i18n>title}">
-        <IconTabBar expandable="false">
+        <IconTabBar id="iconTabBar" expandable="false" select="onTabSelect">
             <items>
-                <IconTabFilter key="json" text="JSON Model">
-                    <mvc:XMLView viewName="project2.view.JsonTab"/>
-                </IconTabFilter>
-                <IconTabFilter key="odataV2" text="OData V2 Model">
-                    <mvc:XMLView viewName="project2.view.ODataV2Tab"/>
-                </IconTabFilter>
-                <IconTabFilter key="odataV4" text="OData V4 Model">
-                    <mvc:XMLView viewName="project2.view.ODataV4Tab"/>
-                </IconTabFilter>
+                <IconTabFilter id="tabJson" key="json" text="JSON Model" />
+                <IconTabFilter id="tabODataV2" key="odataV2" text="OData V2 Model" />
+                <IconTabFilter id="tabODataV4" key="odataV4" text="OData V4 Model" />
             </items>
         </IconTabBar>
     </Page>

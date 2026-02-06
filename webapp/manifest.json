@@ -98,8 +98,6 @@
     "routing": {
       "config": {
         "routerClass": "sap.m.routing.Router",
-        "controlAggregation": "pages",
-        "controlId": "app",
         "transition": "slide",
         "type": "View",
         "viewType": "XML",
@@ -110,7 +108,14 @@
       "routes": [
         {
           "name": "RouteMain",
-          "pattern": ":?query:",
+          "pattern": "",
+          "target": [
+            "TargetMain"
+          ]
+        },
+        {
+          "name": "RouteTab",
+          "pattern": "tab/{tabKey}",
           "target": [
             "TargetMain"
           ]
@@ -118,8 +123,27 @@
       ],
       "targets": {
         "TargetMain": {
-          "id": "Main",
-          "name": "Main"
+          "name": "Main",
+          "controlId": "app",
+          "controlAggregation": "pages"
+        },
+        "TargetTabJson": {
+          "name": "JsonTab",
+          "controlId": "tabJson",
+          "controlAggregation": "content",
+          "parent": "TargetMain"
+        },
+        "TargetTabODataV2": {
+          "name": "ODataV2Tab",
+          "controlId": "tabODataV2",
+          "controlAggregation": "content",
+          "parent": "TargetMain"
+        },
+        "TargetTabODataV4": {
+          "name": "ODataV4Tab",
+          "controlId": "tabODataV4",
+          "controlAggregation": "content",
+          "parent": "TargetMain"
         }
       }
     },
