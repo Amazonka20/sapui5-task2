@@ -34,7 +34,7 @@
             <Column><Text text="{i18n>colActions}"/></Column>
         </columns>
         <items>
-            <ColumnListItem>
+            <ColumnListItem type="Navigation" press="onNavigate">
             <cells>
                 <Text text="{oDataV2>Name}"/>
                 <Text text="{oDataV2>Description}"/>

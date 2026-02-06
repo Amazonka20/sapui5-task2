@@ -149,6 +149,14 @@ sap.ui.define(
         oBinding.sort([oSorter]);
       },
 
+      onNavigate(oEvent) {
+        const iId = oEvent
+          .getSource()
+          .getBindingContext("oDataV2")
+          .getProperty("ID");
+        this.getRouter().navTo("ProductPage", { ProductID: iId });
+      },
+
       _validateDialog() {
         const oData = this.oDialog.getBindingContext("oDataV2").getObject();
 
