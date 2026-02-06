@@ -12,5 +12,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], (Controller) => {
         .getResourceBundle()
         .getText(sText, aArgs);
     },
+    getRouter() {
+      return this.getOwnerComponent().getRouter();
+    },
   });
 });
