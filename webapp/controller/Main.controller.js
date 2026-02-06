@@ -24,6 +24,18 @@ sap.ui.define(["project2/controller/BaseController"], (BaseController) => {
       if (oIconTabBar) {
         oIconTabBar.setSelectedKey(sTabKey);
       }
+
+      const oTargets = this.getRouter().getTargets();
+
+      const oTargetByKey = {
+        json: "TargetTabJson",
+        odataV2: "TargetTabODataV2",
+        odataV4: "TargetTabODataV4",
+      };
+      const sTarget = oTargetByKey[sTabKey];
+      if (sTarget) {
+        oTargets.display(sTarget);
+      }
     },
   });
 });
