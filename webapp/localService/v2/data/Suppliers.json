@@ -1,0 +1,107 @@
+[
+    {
+        "ID": 1,
+        "Name": "North Harbor Publishing",
+        "Address": {
+            "Street": "18 Dockside Lane",
+            "City": "Liverpool",
+            "State": "Merseyside",
+            "ZipCode": "L1 8JQ",
+            "Country": "United Kingdom"
+        },
+        "Concurrency": 1,
+        "Products": [
+            {
+                "__metadata": {
+                    "uri": "Products(1)"
+                }
+            },
+            {
+                "__metadata": {
+                    "uri": "Products(7)"
+                }
+            }
+        ]
+    },
+    {
+        "ID": 2,
+        "Name": "Maple Leaf Books",
+        "Address": {
+            "Street": "240 Bloor St W",
+            "City": "Toronto",
+            "State": "ON",
+            "ZipCode": "M5S 1W3",
+            "Country": "Canada"
+        },
+        "Concurrency": 1,
+        "Products": [
+            {
+                "__metadata": {
+                    "uri": "Products(2)"
+                }
+            },
+            {
+                "__metadata": {
+                    "uri": "Products(3)"
+                }
+            }
+        ]
+    },
+    {
+        "ID": 3,
+        "Name": "Harborlight Press",
+        "Address": {
+            "Street": "77 Seaport Blvd",
+            "City": "Boston",
+            "State": "MA",
+            "ZipCode": "02210",
+            "Country": "USA"
+        },
+        "Concurrency": 1,
+        "Products": [
+            {
+                "__metadata": {
+                    "uri": "Products(4)"
+                }
+            }
+        ]
+    },
+    {
+        "ID": 4,
+        "Name": "Midtown Media Group",
+        "Address": {
+            "Street": "500 5th Ave",
+            "City": "New York",
+            "State": "NY",
+            "ZipCode": "10110",
+            "Country": "USA"
+        },
+        "Concurrency": 1,
+        "Products": [
+            {
+                "__metadata": {
+                    "uri": "Products(5)"
+                }
+            }
+        ]
+    },
+    {
+        "ID": 5,
+        "Name": "Pacific Pageworks",
+        "Address": {
+            "Street": "101 Powell St",
+            "City": "San Francisco",
+            "State": "CA",
+            "ZipCode": "94102",
+            "Country": "USA"
+        },
+        "Concurrency": 1,
+        "Products": [
+            {
+                "__metadata": {
+                    "uri": "Products(6)"
+                }
+            }
+        ]
+    }
+]

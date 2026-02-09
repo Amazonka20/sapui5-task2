@@ -1,7 +1,72 @@
 <mvc:View controllerName="project2.controller.Product"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
-    <Page id="ProductPage" >
-       <Text text="Product Content"/>
-    </Page>
+    xmlns="sap.m"
+    xmlns:uxap="sap.uxap"
+    xmlns:form="sap.ui.layout.form">
+      <uxap:ObjectPageLayout id="ProductPage" upperCaseAnchorBar="false" showTitleInHeaderContent="true">
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:expandedHeading>
+                    <Title text="{oDataV2>Name}" />
+                </uxap:expandedHeading>
+                <uxap:snappedHeading>
+                    <Title text="{oDataV2>Name}" />
+                </uxap:snappedHeading>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+
+        <uxap:sections>
+            <uxap:ObjectPageSection title="Product Info">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <form:SimpleForm editable="false" layout="ResponsiveGridLayout">
+                            <Label text="Name" />
+                            <Text text="{oDataV2>Name}" />
+
+                            <Label text="Description" />
+                            <Text text="{oDataV2>Description}" />
+
+                            <Label text="Release Date" />
+                            <Text text="{oDataV2>ReleaseDate}" />
+
+                            <Label text="Discontinued Date" />
+                            <Text text="{oDataV2>DiscontinuedDate}" />
+
+                            <Label text="Rating" />
+                            <Text text="{oDataV2>Rating}" />
+                            
+                            <Label text="Price" />
+                            <Text text="{oDataV2>Price}" />
+                        </form:SimpleForm>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+
+            <uxap:ObjectPageSection title="Supplier Details">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <form:SimpleForm 
+                            editable="false" 
+                            layout="ResponsiveGridLayout" 
+                         >
+                            <Label text="Street" />
+                            <Text text="{oDataV2>Supplier/Address/Street}" />
+
+                            <Label text="City" />
+                            <Text text="{oDataV2>Supplier/Address/City}" />
+
+                            <Label text="State" />
+                            <Text text="{oDataV2>Supplier/Address/State}" />
+
+                            <Label text="Zip Code" />
+                            <Text text="{oDataV2>Supplier/Address/ZipCode}" />
+
+                            <Label text="Country" />
+                            <Text text="{oDataV2>Supplier/Address/Country}" />
+                        </form:SimpleForm>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+    </uxap:ObjectPageLayout>
 </mvc:View>
