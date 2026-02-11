@@ -2,7 +2,16 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
         <Title text="OData V4 Model" level="H3"/>
-        <Table items="{oDataV4>/Products}">
+        <Table 
+            id="booksTableV4"
+            items="{oDataV4>/Products}"
+            mode="MultiSelect"
+            selectionChange="onSelectionChange">
+        <headerToolbar>
+        <Toolbar>
+           <Button text="{i18n>btnDelete}" press="onDelete" enabled="{view>/bCanDelete}" type="Reject"/>
+        </Toolbar>
+        </headerToolbar>
         <columns>
             <Column><Text text="Name"/></Column>
             <Column><Text text="Description"/></Column>
