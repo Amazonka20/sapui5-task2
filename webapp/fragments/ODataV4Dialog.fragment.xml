@@ -1,0 +1,96 @@
+<core:FragmentDefinition
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+  xmlns:form="sap.ui.layout.form">
+  <Dialog 
+        id="dialogV4" 
+        title="{i18n>dialogTitleAddRecord}" 
+        class="sapUiContentPadding">
+    <content>
+        <form:Form>
+            <form:layout>
+                <form:ResponsiveGridLayout/>
+            </form:layout>    
+        <form:formContainers>
+            <form:FormContainer>
+            <form:formElements>
+
+                <form:FormElement>
+                <form:label>
+                    <Label text="Name" required="true"/>
+                </form:label>
+                <form:fields>
+                    <Input id="inpNameV4" value="{record>/Name}"/>
+                </form:fields>
+                </form:FormElement>
+
+                <form:FormElement>
+                <form:label>
+                    <Label text="Description" required="true"/>
+                </form:label>
+                <form:fields>
+                    <Input id="inpDescriptionV4" value="{record>/Description}"/>
+                </form:fields>
+                </form:FormElement>
+
+                <form:FormElement>
+                <form:label>
+                    <Label text="ReleaseDate" required="true"/>
+                </form:label>
+                <form:fields>
+                    <DatePicker 
+                    id="dpReleaseDateV4"  
+                    dateValue="{record>/ReleaseDate}"/>
+                </form:fields>
+                </form:FormElement>
+
+                <form:FormElement>
+                <form:label>
+                    <Label text="DiscontinuedDate"/>
+                </form:label>
+                <form:fields>
+                    <DatePicker id="dpDiscontinuedDateV4" dateValue="{record>/DiscontinuedDate}"/>
+                </form:fields>
+                </form:FormElement>
+
+                <form:FormElement>
+                <form:label>
+                    <Label text="Rating" required="true"/>
+                </form:label>
+                <form:fields>
+                    <Input 
+                        id="inpRatingV4" 
+                        type="Number"  
+                        value="{
+                                path: 'record>/Rating',
+                                type: 'sap.ui.model.type.Integer'
+                            }"/>
+                </form:fields>
+                </form:FormElement>
+
+                <form:FormElement>
+                <form:label>
+                    <Label text="Price" required="true"/>
+                </form:label>
+                <form:fields>
+                    <Input id="inpPriceV4" 
+                            type="Number"                 
+                            value="{
+                                path: 'record>/Price', 
+                                type: 'sap.ui.model.type.Float'}" />
+                </form:fields>
+                </form:FormElement>
+
+            </form:formElements>
+            </form:FormContainer>
+        </form:formContainers>
+        </form:Form>
+    </content>
+    <beginButton>
+      <Button text="{i18n>btnSave}" type="Emphasized" press="onSaveDialog"/>
+    </beginButton>
+    <endButton>
+      <Button text="{i18n>btnClose}" press="onCloseDialog"/>
+    </endButton>
+  </Dialog>
+</core:FragmentDefinition>
