@@ -51,15 +51,17 @@ sap.ui.define(
           if (this._isRequestCanceled(oError)) {
             return;
           }
+          console.error(oError);
         });
 
         oDialog.setBindingContext(oNewContext, "oDataV4");
         oDialog.open();
       },
 
-      onCloseDialog(oEvent) {
+      onCancelDialog(oEvent) {
         const oDialog = oEvent.getSource().getParent();
         const oContext = oDialog.getBindingContext("oDataV4");
+
         if (oContext && oContext.isTransient()) {
           oContext.delete();
         }
@@ -73,24 +75,21 @@ sap.ui.define(
           return;
         }
 
-        const oNewContext = this.oDialog.getBindingContext("oDataV4");
         const oTableBinding = this._getBooksTable().getBinding("items");
         const oModel = this.getModel("oDataV4");
 
         try {
           await oModel.submitBatch("changes");
-          await oNewContext.created();
 
           MessageToast.show(this.getI18nText("msgCreateSuccess"));
           oTableBinding.refresh();
 
-          this.onCloseDialog(oEvent);
+          this._onCloseDialog(oEvent);
         } catch (oError) {
           if (this._isRequestCanceled(oError)) {
             return;
           }
           MessageToast.show(this.getI18nText("msgCreateError"));
-          this.onCloseDialog(oEvent);
         }
       },
 
@@ -179,9 +178,15 @@ sap.ui.define(
         return this.oDialog;
       },
 
+      _onCloseDialog(oEvent) {
+        const oDialog = oEvent.getSource().getParent();
+
+        this._resetDialogValidation();
+        oDialog.close();
+      },
+
       _isRequestCanceled(oError) {
-        const sMsg = String(oError && oError.message ? oError.message : oError);
-        return sMsg.includes("Request canceled");
+        return Boolean(oError && oError.canceled === true);
       },
 
       _getEmptyRecord() {
