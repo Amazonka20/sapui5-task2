@@ -1,96 +1,96 @@
 <core:FragmentDefinition
-  xmlns:m="sap.m"
+  xmlns="sap.m"
   xmlns:core="sap.ui.core"
-  xmlns="sap.ui.layout.form">
-  <m:Dialog 
+  xmlns:form="sap.ui.layout.form">
+  <Dialog 
         id="dialogV4" 
         title="{i18n>dialogTitleAddRecord}" 
         class="sapUiContentPadding">
     <content>
-        <Form>
-            <layout>
-                <ResponsiveGridLayout/>
-            </layout>    
-        <formContainers>
-            <FormContainer>
-            <formElements>
+        <form:Form>
+            <form:layout>
+                <form:ResponsiveGridLayout/>
+            </form:layout>    
+        <form:formContainers>
+            <form:FormContainer>
+            <form:formElements>
 
-                <FormElement>
-                <label>
-                    <m:Label text="Name" required="true"/>
-                </label>
-                <fields>
-                    <m:Input id="inpNameV4" value="{oDataV4>Name}"/>
-                </fields>
-                </FormElement>
+                <form:FormElement>
+                <form:label>
+                    <Label text="Name" required="true"/>
+                </form:label>
+                <form:fields>
+                    <Input id="inpNameV4" value="{oDataV4>Name}"/>
+                </form:fields>
+                </form:FormElement>
 
-                <FormElement>
-                <label>
-                    <m:Label text="Description" required="true"/>
-                </label>
-                <fields>
-                    <m:Input id="inpDescriptionV4" value="{oDataV4>Description}"/>
-                </fields>
-                </FormElement>
+                <form:FormElement>
+                <form:label>
+                    <Label text="Description" required="true"/>
+                </form:label>
+                <form:fields>
+                    <Input id="inpDescriptionV4" value="{oDataV4>Description}"/>
+                </form:fields>
+                </form:FormElement>
 
-                <FormElement>
-                <label>
-                    <m:Label text="ReleaseDate" required="true"/>
-                </label>
-                <fields>
-                    <m:DatePicker 
+                <form:FormElement>
+                <form:label>
+                    <Label text="ReleaseDate" required="true"/>
+                </form:label>
+                <form:fields>
+                    <DatePicker 
                     id="dpReleaseDateV4"  
                     dateValue="{oDataV4>ReleaseDate}"/>
-                </fields>
-                </FormElement>
+                </form:fields>
+                </form:FormElement>
 
-                <FormElement>
-                <label>
-                    <m:Label text="DiscontinuedDate"/>
-                </label>
-                <fields>
-                    <m:DatePicker id="dpDiscontinuedDateV4" dateValue="{oDataV4>DiscontinuedDate}"/>
-                </fields>
-                </FormElement>
+                <form:FormElement>
+                <form:label>
+                    <Label text="DiscontinuedDate"/>
+                </form:label>
+                <form:fields>
+                    <DatePicker id="dpDiscontinuedDateV4" dateValue="{oDataV4>DiscontinuedDate}"/>
+                </form:fields>
+                </form:FormElement>
 
-                <FormElement>
-                <label>
-                    <m:Label text="Rating" required="true"/>
-                </label>
-                <fields>
-                    <m:Input 
+                <form:FormElement>
+                <form:label>
+                    <Label text="Rating" required="true"/>
+                </form:label>
+                <form:fields>
+                    <Input 
                         id="inpRatingV4" 
                         type="Number"  
                         value="{
                                 path: 'oDataV4>Rating',
                                 type: 'sap.ui.model.type.Integer'
                             }"/>
-                </fields>
-                </FormElement>
+                </form:fields>
+                </form:FormElement>
 
-                <FormElement>
-                <label>
-                    <m:Label text="Price" required="true"/>
-                </label>
-                <fields>
-                    <m:Input id="inpPriceV4" 
+                <form:FormElement>
+                <form:label>
+                    <Label text="Price" required="true"/>
+                </form:label>
+                <form:fields>
+                    <Input id="inpPriceV4" 
                             type="Number"                 
                             value="{
                                 path: 'oDataV4>Price', 
                                 type: 'sap.ui.model.type.Float'}" />
-                </fields>
-                </FormElement>
+                </form:fields>
+                </form:FormElement>
 
-            </formElements>
-            </FormContainer>
-        </formContainers>
-        </Form>
+            </form:formElements>
+            </form:FormContainer>
+        </form:formContainers>
+        </form:Form>
     </content>
     <beginButton>
-      <m:Button text="{i18n>btnSave}" type="Emphasized" press="onSaveDialog"/>
+      <Button text="{i18n>btnSave}" type="Emphasized" press="onSaveDialog"/>
     </beginButton>
     <endButton>
-      <m:Button text="{i18n>btnClose}" press="onCloseDialog"/>
+      <Button text="{i18n>btnClose}" press="onCloseDialog"/>
     </endButton>
-  </m:Dialog>
+  </Dialog>
 </core:FragmentDefinition>
