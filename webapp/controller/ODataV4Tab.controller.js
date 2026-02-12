@@ -39,41 +39,63 @@ sap.ui.define(
 
       async onOpenAddDialog() {
         const oDialog = await this._getDialog();
-        oDialog.getModel("record").setData(this._getEmptyRecord());
+        const oListBinding = this.getModel("oDataV4").bindList(
+          "/Products",
+          null,
+          null,
+          null,
+          { $$updateGroupId: "changes" }
+        );
+        const oNewContext = oListBinding.create(this._getEmptyRecord());
+        oNewContext.created().catch((oError) => {
+          if (this._isRequestCanceled(oError)) {
+            return;
+          }
+        });
 
+        oDialog.setBindingContext(oNewContext, "oDataV4");
         oDialog.open();
       },
 
       onCloseDialog(oEvent) {
         const oDialog = oEvent.getSource().getParent();
+        const oContext = oDialog.getBindingContext("oDataV4");
+        if (oContext && oContext.isTransient()) {
+          oContext.delete();
+        }
+
         this._resetDialogValidation();
         oDialog.close();
       },
 
-      onSaveDialog(oEvent) {
+      async onSaveDialog(oEvent) {
         if (!this._validateDialog()) {
           return;
         }
-        const oTable = this._getBooksTable();
-        const oListBinding = oTable.getBinding("items");
-        const oPayload = this.oDialog.getModel("record").getData();
-        const oNewContext = oListBinding.create(oPayload);
 
-        oNewContext
-          .created()
-          .then(() => {
-            MessageToast.show(this.getI18nText("msgCreateSuccess"));
+        const oNewContext = this.oDialog.getBindingContext("oDataV4");
+        const oTableBinding = this._getBooksTable().getBinding("items");
+        const oModel = this.getModel("oDataV4");
 
-            this.onCloseDialog(oEvent);
-          })
-          .catch(() => {
-            MessageToast.show(this.getI18nText("msgCreateError"));
-            this.onCloseDialog(oEvent);
-          });
+        try {
+          await oModel.submitBatch("changes");
+          await oNewContext.created();
+
+          MessageToast.show(this.getI18nText("msgCreateSuccess"));
+          oTableBinding.refresh();
+
+          this.onCloseDialog(oEvent);
+        } catch (oError) {
+          if (this._isRequestCanceled(oError)) {
+            return;
+          }
+          MessageToast.show(this.getI18nText("msgCreateError"));
+          this.onCloseDialog(oEvent);
+        }
       },
 
       _validateDialog() {
-        const oData = this.oDialog.getModel("record").getData();
+        const oData = this.oDialog.getBindingContext("oDataV4").getObject();
 
         return DialogValidator.validateDialog({
           data: oData,
@@ -153,11 +175,13 @@ sap.ui.define(
           this.oDialog = await this.loadFragment({
             name: "project2.fragments.ODataV4Dialog",
           });
-
-          const oNewModel = new JSONModel(this._getEmptyRecord());
-          this.oDialog.setModel(oNewModel, "record");
         }
         return this.oDialog;
+      },
+
+      _isRequestCanceled(oError) {
+        const sMsg = String(oError && oError.message ? oError.message : oError);
+        return sMsg.includes("Request canceled");
       },
 
       _getEmptyRecord() {

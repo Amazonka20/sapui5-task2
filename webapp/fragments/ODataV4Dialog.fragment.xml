@@ -20,7 +20,7 @@
                     <Label text="Name" required="true"/>
                 </form:label>
                 <form:fields>
-                    <Input id="inpNameV4" value="{record>/Name}"/>
+                    <Input id="inpNameV4" value="{oDataV4>Name}"/>
                 </form:fields>
                 </form:FormElement>
 
@@ -29,7 +29,7 @@
                     <Label text="Description" required="true"/>
                 </form:label>
                 <form:fields>
-                    <Input id="inpDescriptionV4" value="{record>/Description}"/>
+                    <Input id="inpDescriptionV4" value="{oDataV4>Description}"/>
                 </form:fields>
                 </form:FormElement>
 
@@ -40,7 +40,7 @@
                 <form:fields>
                     <DatePicker 
                     id="dpReleaseDateV4"  
-                    dateValue="{record>/ReleaseDate}"/>
+                    dateValue="{oDataV4>ReleaseDate}"/>
                 </form:fields>
                 </form:FormElement>
 
@@ -49,7 +49,7 @@
                     <Label text="DiscontinuedDate"/>
                 </form:label>
                 <form:fields>
-                    <DatePicker id="dpDiscontinuedDateV4" dateValue="{record>/DiscontinuedDate}"/>
+                    <DatePicker id="dpDiscontinuedDateV4" dateValue="{oDataV4>DiscontinuedDate}"/>
                 </form:fields>
                 </form:FormElement>
 
@@ -62,7 +62,7 @@
                         id="inpRatingV4" 
                         type="Number"  
                         value="{
-                                path: 'record>/Rating',
+                                path: 'oDataV4>Rating',
                                 type: 'sap.ui.model.type.Integer'
                             }"/>
                 </form:fields>
@@ -76,7 +76,7 @@
                     <Input id="inpPriceV4" 
                             type="Number"                 
                             value="{
-                                path: 'record>/Price', 
+                                path: 'oDataV4>Price', 
                                 type: 'sap.ui.model.type.Float'}" />
                 </form:fields>
                 </form:FormElement>
