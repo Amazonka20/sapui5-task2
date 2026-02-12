@@ -20,6 +20,7 @@
             <Column><Text text="DiscontinuedDate"/></Column>
             <Column><Text text="Rating"/></Column>
             <Column><Text text="Price"/></Column>
+            <Column><Text text="Actions"/></Column>
         </columns>
         <items>
             <ColumnListItem>
@@ -38,6 +39,7 @@
                             }"/>
                 <Text text="{oDataV4>Rating}"/>
                 <ObjectNumber number="{oDataV4>Price}"/>
+                <Button text="{i18n>btnEdit}" press="onEdit" type="Transparent"/>
             </cells>
             </ColumnListItem>
         </items>
