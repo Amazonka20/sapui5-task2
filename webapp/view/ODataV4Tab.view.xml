@@ -9,6 +9,7 @@
             selectionChange="onSelectionChange">
         <headerToolbar>
         <Toolbar>
+            <Button text="{i18n>btnAdd}" press="onOpenAddDialog"  />
            <Button text="{i18n>btnDelete}" press="onDelete" enabled="{view>/bCanDelete}" type="Reject"/>
         </Toolbar>
         </headerToolbar>
@@ -27,11 +28,13 @@
                 <Text text="{oDataV4>Description}"/>
                 <Text text="{
                             path: 'oDataV4>ReleaseDate',
-                            type: 'sap.ui.model.odata.type.DateTimeOffset'
+                            type: 'sap.ui.model.odata.type.DateTimeOffset',
+                            constraints: { precision: 3 }
                             }"/>
                 <Text text="{
                             path: 'oDataV4>DiscontinuedDate',
-                            type: 'sap.ui.model.odata.type.DateTimeOffset'
+                            type: 'sap.ui.model.odata.type.DateTimeOffset',
+                            constraints: { precision: 3 }
                             }"/>
                 <Text text="{oDataV4>Rating}"/>
                 <ObjectNumber number="{oDataV4>Price}"/>
