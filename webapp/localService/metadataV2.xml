@@ -12,6 +12,7 @@
                 <Property Name="DiscontinuedDate" Type="Edm.DateTime" />
                 <Property Name="Rating" Type="Edm.Int32" Nullable="false" />
                 <Property Name="Price" Type="Edm.Decimal" Nullable="false" />
+                <Property Name="SupplierID" Type="Edm.Int32" Nullable="true" />
                 <NavigationProperty Name="Category" Relationship="ODataDemo.Product_Category_Category_Products" ToRole="Category_Products" FromRole="Product_Category" />
                 <NavigationProperty Name="Supplier" Relationship="ODataDemo.Product_Supplier_Supplier_Products" ToRole="Supplier_Products" FromRole="Product_Supplier" />
             </EntityType>
@@ -47,6 +48,14 @@
             <Association Name="Product_Supplier_Supplier_Products">
                 <End Type="ODataDemo.Supplier" Role="Supplier_Products" Multiplicity="0..1" />
                 <End Type="ODataDemo.Product" Role="Product_Supplier" Multiplicity="*" />
+                 <ReferentialConstraint>
+                    <Principal Role="Supplier_Products">
+                        <PropertyRef Name="ID" />
+                    </Principal>
+                    <Dependent Role="Product_Supplier">
+                        <PropertyRef Name="SupplierID" />
+                    </Dependent>
+                </ReferentialConstraint>
             </Association>
             <EntityContainer Name="DemoService" m:IsDefaultEntityContainer="true">
                 <EntitySet Name="Products" EntityType="ODataDemo.Product" />

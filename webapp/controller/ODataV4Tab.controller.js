@@ -52,6 +52,7 @@ sap.ui.define(
           if (this._isRequestCanceled(oError)) {
             return;
           }
+          console.error(oError);
         });
         this.getModel("view").setProperty("/bEditMode", false);
         oDialog.setBindingContext(oNewContext, "oDataV4");
@@ -203,8 +204,7 @@ sap.ui.define(
       },
 
       _isRequestCanceled(oError) {
-        const sMsg = String(oError && oError.message ? oError.message : oError);
-        return sMsg.includes("Request canceled");
+        return Boolean(oError && oError.canceled === true);
       },
 
       _getEmptyRecord() {

@@ -56,7 +56,9 @@
       "minUI5Version": "1.144.0",
       "libs": {
         "sap.m": {},
-        "sap.ui.core": {}
+        "sap.ui.core": {},
+        "sap.uxap": {},
+        "sap.ui.layout": {}
       }
     },
     "contentDensities": {
@@ -104,7 +106,9 @@
         "viewType": "XML",
         "path": "project2.view",
         "async": true,
-        "viewPath": "project2.view"
+        "viewPath": "project2.view",
+        "controlId": "app",
+        "controlAggregation": "pages"
       },
       "routes": [
         {
@@ -152,6 +156,9 @@
           "controlId": "tabODataV4",
           "controlAggregation": "content",
           "parent": "TargetMain"
+        },
+        "ProductTarget": {
+          "name": "Product"
         }
       }
     },
