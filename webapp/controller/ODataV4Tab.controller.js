@@ -58,7 +58,7 @@ sap.ui.define(
         oDialog.open();
       },
 
-      onCancelDialog(oEvent) {
+      onCloseDialog(oEvent) {
         const oDialog = oEvent.getSource().getParent();
         const oContext = oDialog.getBindingContext("oDataV4");
 
@@ -77,14 +77,16 @@ sap.ui.define(
 
         const oTableBinding = this._getBooksTable().getBinding("items");
         const oModel = this.getModel("oDataV4");
+        const oContext = this.oDialog.getBindingContext("oDataV4");
 
         try {
-          await oModel.submitBatch("changes");
+          oModel.submitBatch("changes");
+          await oContext.created();
 
           MessageToast.show(this.getI18nText("msgCreateSuccess"));
           oTableBinding.refresh();
 
-          this._onCloseDialog(oEvent);
+          this.onCloseDialog(oEvent);
         } catch (oError) {
           if (this._isRequestCanceled(oError)) {
             return;
@@ -176,13 +178,6 @@ sap.ui.define(
           });
         }
         return this.oDialog;
-      },
-
-      _onCloseDialog(oEvent) {
-        const oDialog = oEvent.getSource().getParent();
-
-        this._resetDialogValidation();
-        oDialog.close();
       },
 
       _isRequestCanceled(oError) {
