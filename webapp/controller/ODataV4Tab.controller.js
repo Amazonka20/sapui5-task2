@@ -13,6 +13,7 @@ sap.ui.define(
       onInit() {
         const UIModel = new JSONModel({
           bCanDelete: false,
+          bEditMode: false,
         });
         this.getView().setModel(UIModel, "view");
       },
@@ -52,7 +53,7 @@ sap.ui.define(
             return;
           }
         });
-
+        this.getModel("view").setProperty("/bEditMode", false);
         oDialog.setBindingContext(oNewContext, "oDataV4");
         oDialog.open();
       },
@@ -60,8 +61,13 @@ sap.ui.define(
       onCloseDialog(oEvent) {
         const oDialog = oEvent.getSource().getParent();
         const oContext = oDialog.getBindingContext("oDataV4");
+        const bEditMode = this.getModel("view").getProperty("/bEditMode");
+
         if (oContext && oContext.isTransient()) {
           oContext.delete();
+        }
+        if (bEditMode) {
+          oContext.resetChanges();
         }
 
         this._resetDialogValidation();
@@ -73,25 +79,42 @@ sap.ui.define(
           return;
         }
 
-        const oNewContext = this.oDialog.getBindingContext("oDataV4");
         const oTableBinding = this._getBooksTable().getBinding("items");
         const oModel = this.getModel("oDataV4");
+        const oContext = this.oDialog.getBindingContext("oDataV4");
+        const bEditMode = this.getModel("view").getProperty("/bEditMode");
 
         try {
-          await oModel.submitBatch("changes");
-          await oNewContext.created();
+          await oModel.submitBatch(bEditMode ? "edit" : "changes");
 
-          MessageToast.show(this.getI18nText("msgCreateSuccess"));
-          oTableBinding.refresh();
+          if (!bEditMode) {
+            await oContext.created();
+            oTableBinding.refresh();
+          }
 
+          MessageToast.show(
+            this.getI18nText(
+              bEditMode ? "msgUpdateSuccess" : "msgCreateSuccess"
+            )
+          );
           this.onCloseDialog(oEvent);
         } catch (oError) {
           if (this._isRequestCanceled(oError)) {
             return;
           }
-          MessageToast.show(this.getI18nText("msgCreateError"));
-          this.onCloseDialog(oEvent);
+          MessageToast.show(
+            this.getI18nText(bEditMode ? "msgUpdateError" : "msgCreateError")
+          );
         }
+      },
+
+      async onEdit(oEvent) {
+        const oDialog = await this._getDialog();
+        const oContext = oEvent.getSource().getBindingContext("oDataV4");
+        oDialog.setBindingContext(oContext, "oDataV4");
+
+        this.getModel("view").setProperty("/bEditMode", true);
+        oDialog.open();
       },
 
       _validateDialog() {
